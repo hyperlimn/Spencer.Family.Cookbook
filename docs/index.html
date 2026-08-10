@@ -21,6 +21,7 @@
       <button id="surprise" type="button">Surprise me</button>
       <a href="cookbook-reading-order.pdf" target="_blank">Original book</a>
       <button id="add-recipe" type="button">Add recipe</button>
+      <button id="mobile-menu-button" class="menu-button" type="button" aria-label="Open browse menu" aria-haspopup="dialog"><span></span><span></span><span></span></button>
     </nav>
   </header>
 
@@ -64,7 +65,7 @@
       <section class="results">
         <header class="results-heading">
           <div><h1 id="result-title">All recipes</h1><p id="result-context">The complete family collection</p></div>
-          <span id="count" aria-live="polite">Loading…</span>
+          <div class="result-meta"><span id="count" aria-live="polite">Loading…</span><button id="mobile-reset" type="button">Reset</button></div>
         </header>
         <div id="recipe-grid" class="recipe-grid" aria-live="polite"></div>
         <div id="empty" class="empty" hidden><span aria-hidden="true">✽</span><h2>No recipes found</h2><p>Try another word or reset your filters.</p></div>
@@ -101,6 +102,12 @@
       <p>Edit any cookbook record or remove a recipe added after the original import.</p>
       <label class="dev-search">Find a recipe<input id="dev-search" type="search" placeholder="Search recipe titles…" autocomplete="off"></label>
       <div id="dev-list" class="dev-list"></div>
+    </article>
+  </dialog>
+  <dialog id="mobile-menu-dialog">
+    <article class="mobile-panel">
+      <header><span>Browse & appearance</span><button type="button" id="close-mobile-menu" aria-label="Close menu">×</button></header>
+      <div id="mobile-tools"></div>
     </article>
   </dialog>
   <footer><span>From Kathy’s collection.</span><span id="collection-stats"></span></footer>

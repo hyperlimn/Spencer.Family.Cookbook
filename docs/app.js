@@ -42,7 +42,7 @@ function render(){
 }
 function openRecipe(recipe){
   if(!recipe)return;
-  const firstPage=recipe.source_pages?.[0];const sourceLink=firstPage?`<a href="cookbook-reading-order.pdf#page=${firstPage+1}" target="_blank">Original page${recipe.source_pages.length>1?"s":""} ${recipe.source_pages.join(", ")}</a>`:"";
+  const firstPage=recipe.source_pages?.[0];const sourceLink=firstPage?`<a href="cookbook-reading-order.pdf#page=${firstPage+2}" target="_blank">Original page${recipe.source_pages.length>1?"s":""} ${recipe.source_pages.join(", ")}</a>`:"";
   ui.detail.innerHTML=`<button type="button" class="close" aria-label="Close recipe">×</button><span class="detail-category">${escapeHtml(recipe.category)}</span><h1 class="detail-title">${escapeHtml(recipe.title)}</h1><p class="detail-by">${recipe.contributor?`Contributed by ${escapeHtml(recipe.contributor)}`:"From the family collection"}</p><div class="detail-grid"><section><h2>Ingredients</h2><ul class="ingredients">${recipe.ingredients.length?recipe.ingredients.map(item=>`<li>${escapeHtml(item)}</li>`).join(""):'<li>See original page</li>'}</ul></section><section class="directions"><h2>Directions</h2>${recipe.directions.map(step=>`<p>${escapeHtml(step)}</p>`).join("")}</section></div><div class="source-note">${sourceLink}<button type="button" class="expand-recipe">Full screen</button></div>`;
   ui.dialog.showModal();history.replaceState(null,"",`#${recipe.slug}`);ui.detail.querySelector(".close").addEventListener("click",closeRecipe);ui.detail.querySelector(".expand-recipe").addEventListener("click",toggleRecipeSize);
 }
@@ -55,6 +55,12 @@ function renderDevList(){
   ui.devList.innerHTML=recipes.map(recipe=>`<div class="dev-row"><span><strong>${escapeHtml(recipe.title)}</strong><small>${escapeHtml(recipe.contributor||recipe.category)}</small></span><span class="dev-actions"><a href="https://github.com/hyperlimn/Spencer.Family.Cookbook/edit/main/${repositoryPath(recipe.file)}" target="_blank">Edit</a>${recipe.date_added?`<a class="delete" href="https://github.com/hyperlimn/Spencer.Family.Cookbook/delete/main/${repositoryPath(recipe.file)}" target="_blank">Delete</a>`:""}</span></div>`).join("");
 }
 function openDevMenu(){document.querySelector("#dev-trigger").classList.remove("unlocking");ui.devSearch.value="";renderDevList();ui.devDialog.showModal()}
+const mobileQuery=matchMedia("(max-width: 820px)");
+const appearance=document.querySelector(".appearance"),sidebar=document.querySelector(".sidebar"),mobileTools=document.querySelector("#mobile-tools");
+const appearanceHome=appearance.parentNode,appearanceNext=appearance.nextSibling,sidebarHome=sidebar.parentNode,sidebarNext=sidebar.nextSibling;
+function syncMobileLayout(){
+  if(mobileQuery.matches){mobileTools.append(appearance,sidebar)}else{if(document.querySelector("#mobile-menu-dialog").open)document.querySelector("#mobile-menu-dialog").close();appearanceHome.insertBefore(appearance,appearanceNext);sidebarHome.insertBefore(sidebar,sidebarNext)}
+}
 
 document.querySelector("#search-form").addEventListener("submit",event=>{event.preventDefault();state.query=ui.search.value;render()});
 ui.search.addEventListener("input",event=>{state.query=event.currentTarget.value;render()});
@@ -62,17 +68,19 @@ ui.clearSearch.addEventListener("click",()=>{state.query="";ui.search.value="";u
 document.querySelector("#clear-filters").addEventListener("click",reset);
 ui.face.addEventListener("change",event=>{document.documentElement.dataset.face=event.currentTarget.value;localStorage.setItem("cookbook-face",event.currentTarget.value)});
 ui.dark.addEventListener("change",event=>{const theme=event.currentTarget.checked?"dark":"light";document.documentElement.dataset.theme=theme;localStorage.setItem("cookbook-theme",theme)});
-document.addEventListener("click",event=>{const category=event.target.closest("[data-category]");const contributor=event.target.closest("[data-contributor]");const card=event.target.closest("[data-recipe]");if(category){state.category=state.category===category.dataset.category?"":category.dataset.category;render()}if(contributor){state.contributor=state.contributor===contributor.dataset.contributor?"":contributor.dataset.contributor;render()}if(card)openRecipe(state.recipes.find(recipe=>recipe.slug===card.dataset.recipe))});
+document.addEventListener("click",event=>{const category=event.target.closest("[data-category]");const contributor=event.target.closest("[data-contributor]");const card=event.target.closest("[data-recipe]");if(category){state.category=state.category===category.dataset.category?"":category.dataset.category;render()}if(contributor){state.contributor=state.contributor===contributor.dataset.contributor?"":contributor.dataset.contributor;render()}if((category||contributor)&&mobileQuery.matches&&document.querySelector("#mobile-menu-dialog").open)document.querySelector("#mobile-menu-dialog").close();if(card)openRecipe(state.recipes.find(recipe=>recipe.slug===card.dataset.recipe))});
 document.querySelector("#surprise").addEventListener("click",()=>openRecipe(state.recipes[Math.floor(Math.random()*state.recipes.length)]));
 document.querySelector("#add-recipe").addEventListener("click",()=>ui.addDialog.showModal());
 document.querySelector("#close-add").addEventListener("click",()=>ui.addDialog.close());
 ui.addDialog.addEventListener("click",event=>{if(event.target===ui.addDialog)ui.addDialog.close()});
 document.querySelector("#close-dev").addEventListener("click",()=>ui.devDialog.close());ui.devDialog.addEventListener("click",event=>{if(event.target===ui.devDialog)ui.devDialog.close()});ui.devSearch.addEventListener("input",renderDevList);
+document.querySelector("#mobile-menu-button").addEventListener("click",()=>document.querySelector("#mobile-menu-dialog").showModal());document.querySelector("#close-mobile-menu").addEventListener("click",()=>document.querySelector("#mobile-menu-dialog").close());document.querySelector("#mobile-reset").addEventListener("click",reset);mobileQuery.addEventListener("change",syncMobileLayout);syncMobileLayout();
 {
-  const trigger=document.querySelector("#dev-trigger");let unlockTimer;
+  const trigger=document.querySelector("#dev-trigger");const touchDevice=matchMedia("(pointer: coarse)").matches;let unlockTimer,taps=0,tapTimer;
   const cancel=()=>{clearTimeout(unlockTimer);trigger.classList.remove("unlocking")};
-  trigger.addEventListener("pointerdown",event=>{event.preventDefault();cancel();trigger.classList.add("unlocking");trigger.setPointerCapture?.(event.pointerId);unlockTimer=setTimeout(openDevMenu,10000)});
-  ["pointerup","pointercancel","pointerleave"].forEach(name=>trigger.addEventListener(name,cancel));trigger.addEventListener("contextmenu",event=>event.preventDefault());
+  if(touchDevice){trigger.addEventListener("click",event=>{event.preventDefault();taps+=1;clearTimeout(tapTimer);tapTimer=setTimeout(()=>taps=0,4000);if(taps>=7){taps=0;clearTimeout(tapTimer);openDevMenu()}})}
+  else{trigger.addEventListener("pointerdown",event=>{event.preventDefault();cancel();trigger.classList.add("unlocking");trigger.setPointerCapture?.(event.pointerId);unlockTimer=setTimeout(openDevMenu,10000)});["pointerup","pointercancel","pointerleave"].forEach(name=>trigger.addEventListener(name,cancel))}
+  trigger.addEventListener("contextmenu",event=>event.preventDefault());
 }
 document.querySelector("#recipe-form").addEventListener("submit",event=>{
   event.preventDefault();const values=Object.fromEntries(new FormData(event.currentTarget));

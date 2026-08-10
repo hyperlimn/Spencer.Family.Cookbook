@@ -35,14 +35,17 @@ def main() -> None:
         raise ValueError(f"Missing printed page footers: {missing}")
     writer = PdfWriter()
 
-    # The unnumbered foreword occupies the left half of the first printer sheet.
+    # The first printer sheet has the foreword on the right and a blank page on the left.
     foreword = copy.copy(source.pages[0])
     half_width, page_height = float(foreword.mediabox.width) / 2, float(foreword.mediabox.height)
+    foreword.add_transformation(Transformation().translate(tx=-half_width, ty=0))
     foreword_box = RectangleObject((0, 0, half_width, page_height))
     foreword.mediabox = foreword_box
     foreword.cropbox = foreword_box
     foreword.trimbox = foreword_box
     writer.add_page(foreword)
+
+    writer.add_blank_page(width=half_width, height=page_height)
 
     for printed_page in range(1, 340):
         entry = numbered[printed_page]
