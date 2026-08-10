@@ -7,7 +7,8 @@ const ui={
   dialog:document.querySelector("#recipe-dialog"),detail:document.querySelector("#recipe-detail"),
   face:document.querySelector("#face-select"),dark:document.querySelector("#dark-mode"),
   addDialog:document.querySelector("#add-dialog"),recent:document.querySelector("#recent-additions"),recentList:document.querySelector("#recent-list"),
-  devDialog:document.querySelector("#dev-dialog"),devSearch:document.querySelector("#dev-search"),devList:document.querySelector("#dev-list")
+  devDialog:document.querySelector("#dev-dialog"),devSearch:document.querySelector("#dev-search"),devList:document.querySelector("#dev-list"),
+  submissionToast:document.querySelector("#submission-toast")
 };
 const state={recipes:[],query:"",category:"",contributor:""};
 const repository="https://github.com/hyperlimn/Spencer.Family.Cookbook";
@@ -57,6 +58,8 @@ function renderDevList(){
   ui.devList.innerHTML=recipes.map(recipe=>`<div class="dev-row"><span><strong>${escapeHtml(recipe.title)}</strong><small>${escapeHtml(recipe.contributor||recipe.category)}</small></span><span class="dev-actions"><a href="${repository}/edit/main/${repositoryPath(recipe.file)}" target="_blank">Edit</a>${recipe.date_added?`<a class="delete" href="${repository}/delete/main/${repositoryPath(recipe.file)}" target="_blank">Delete</a>`:""}</span></div>`).join("");
 }
 function openDevMenu(){document.querySelector("#dev-trigger").classList.remove("unlocking");ui.devSearch.value="";renderDevList();ui.devDialog.showModal()}
+let toastTimer;
+function showSubmissionToast(message){clearTimeout(toastTimer);ui.submissionToast.textContent=message;ui.submissionToast.hidden=false;toastTimer=setTimeout(()=>ui.submissionToast.hidden=true,6000)}
 const mobileQuery=matchMedia("(max-width: 820px)");
 const appearance=document.querySelector(".appearance"),sidebar=document.querySelector(".sidebar"),mobileTools=document.querySelector("#mobile-tools");
 const appearanceHome=appearance.parentNode,appearanceNext=appearance.nextSibling,sidebarHome=sidebar.parentNode,sidebarNext=sidebar.nextSibling;
@@ -94,7 +97,7 @@ document.querySelector("#recipe-form").addEventListener("submit",async event=>{
   try{
     const response=await fetch(recipeSubmissionEndpoint,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify({...values,_subject:`Cookbook recipe submission: ${values.title}`,suggested_filename:`${slug}.md`,markdown:content})});
     if(!response.ok)throw new Error(`Submission ${response.status}`);
-    form.reset();status.textContent="Recipe sent successfully. Thank you!";button.disabled=false;button.textContent="Send recipe";
+    form.reset();status.textContent="Submit when your recipe is ready.";button.disabled=false;button.textContent="Send recipe";ui.addDialog.close();showSubmissionToast("Recipe submitted successfully. Thank you!");
   }catch(error){
     status.textContent="The recipe could not be sent. Please try again.";button.disabled=false;button.textContent="Send recipe";console.error(error);
   }
