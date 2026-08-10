@@ -11,6 +11,7 @@ const ui={
 };
 const state={recipes:[],query:"",category:"",contributor:""};
 const repository="https://github.com/hyperlimn/Spencer.Family.Cookbook";
+const submissionEmail="hyperlimn@gmail.com";
 const escapeHtml=value=>String(value??"").replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
 const normalize=value=>String(value??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const countBy=key=>state.recipes.reduce((result,recipe)=>{const value=recipe[key];if(value)result[value]=(result[value]||0)+1;return result},{});
@@ -88,9 +89,10 @@ document.querySelector("#recipe-form").addEventListener("submit",event=>{
   const slug=normalize(values.title).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"family-recipe";
   const ingredients=values.ingredients.split(/\r?\n/).map(line=>line.trim()).filter(Boolean).map(line=>`  - ${JSON.stringify(line)}`).join("\n");
   const content=`---\ntitle: ${JSON.stringify(values.title)}\nslug: ${JSON.stringify(slug)}\ncategory: ${JSON.stringify(values.category)}\ncontributor: ${JSON.stringify(values.contributor)}\nyield: ${JSON.stringify(values.yield||"")}\nsource_pages: []\npdf_page: null\nsource_side: null\nneeds_review: false\ndate_added: ${JSON.stringify(new Date().toISOString().slice(0,10))}\ningredients:\n${ingredients}\n---\n\n${values.directions.trim()}${values.notes.trim()?`\n\n## Family note\n\n${values.notes.trim()}`:""}\n`;
-  const params=new URLSearchParams({filename:`${slug}.md`,value:content});
-  document.querySelector("#form-status").textContent="Finish saving the recipe on GitHub.";
-  window.location.href=`${repository}/new/main/content/recipes?${params}`;
+  const subject=`Cookbook recipe submission: ${values.title}`;
+  const body=`Please add this recipe to the Spencer Family Cookbook.\n\nSuggested filename: ${slug}.md\n\n${content}`;
+  document.querySelector("#form-status").textContent="Your email app is opening. Send the message to submit the recipe.";
+  window.location.href=`mailto:${submissionEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 });
 ui.dialog.addEventListener("click",event=>{if(event.target===ui.dialog)closeRecipe()});
 document.addEventListener("keydown",event=>{if(event.key==="/"&&!/input|textarea|select/i.test(event.target.tagName)){event.preventDefault();ui.search.focus()}});
