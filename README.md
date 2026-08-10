@@ -38,6 +38,8 @@ Mix together macaroons, sugar, and sour cream.
 
 The website's **Add recipe** form sends structured recipe fields to the Cloudflare Worker in `worker/`. The Worker creates a ready-to-file Markdown record on a new branch and opens a GitHub pull request for family review. Merge the pull request to add the recipe to the archive; the existing GitHub workflow validates and deploys the updated site automatically.
 
+Contributed variations of an existing recipe are allowed. The Worker preserves the submitted title and assigns the next available numbered slug, such as `chili-2`, so the new version remains a separate recipe.
+
 To add one through GitHub, open `content/new-recipes`, choose **Add file → Upload files**, drop in the `.md` file, and commit it. New submissions retain their `date_added` value and appear under **Recent additions** automatically. A duplicate recipe slug stops the deployment instead of silently replacing an existing archive entry.
 
 ## Re-import from the PDF

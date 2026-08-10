@@ -2,6 +2,8 @@
 
 This Cloudflare Worker accepts the cookbook form's JSON fields, creates a
 Markdown recipe on a new branch, and opens a GitHub pull request for review.
+When a recipe slug already exists, contributed variations receive the next
+available numbered slug, such as `chili-2`, instead of being rejected.
 
 ## Cloudflare configuration
 

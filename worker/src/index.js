@@ -71,18 +71,27 @@ async function github(env, path, options = {}) {
 }
 
 async function createRecipePullRequest(env, values) {
-  const slug = slugify(values.title);
   const repoPath = `/repos/${env.GITHUB_OWNER}/${env.GITHUB_REPO}`;
-  const filePath = `content/new-recipes/${slug}.md`;
-
-  try {
-    await github(env, `${repoPath}/contents/${filePath}?ref=${env.GITHUB_BRANCH}`);
-    const error = new Error("A recipe with this filename already exists.");
-    error.status = 409;
-    throw error;
-  } catch (error) {
-    if (error.status !== 404) throw error;
+  const baseSlug = slugify(values.title);
+  let slug = baseSlug;
+  for (let version = 1; version < 1000; version += 1) {
+    const paths = [
+      `content/recipes/${slug}.md`,
+      `content/new-recipes/${slug}.md`,
+    ];
+    const results = await Promise.all(paths.map(async path => {
+      try {
+        await github(env, `${repoPath}/contents/${path}?ref=${env.GITHUB_BRANCH}`);
+        return true;
+      } catch (error) {
+        if (error.status === 404) return false;
+        throw error;
+      }
+    }));
+    if (!results.some(Boolean)) break;
+    slug = `${baseSlug}-${version + 1}`;
   }
+  const filePath = `content/new-recipes/${slug}.md`;
 
   const base = await github(env, `${repoPath}/git/ref/heads/${env.GITHUB_BRANCH}`);
   const branch = `recipe-submission/${slug}-${Date.now()}`;
@@ -152,7 +161,6 @@ export default {
       return json({ ok: true, pull_request: pull.html_url }, 201, origin);
     } catch (error) {
       console.error(error.details || error);
-      if (error.status === 409) return json({ error: error.message }, 409, origin);
       if (error.status === 401) {
         return json({ error: "GitHub authentication failed. Check the GITHUB_TOKEN secret." }, 502, origin);
       }
