@@ -44,7 +44,7 @@ def parse_recipe(path: Path) -> dict:
 
 def main() -> None:
     recipes = [parse_recipe(path) for path in sorted((ROOT / "content" / "recipes").glob("*.md"))]
-    recipes.sort(key=lambda item: (item["title"].casefold(), item["source_pages"][0]))
+    recipes.sort(key=lambda item: (item["title"].casefold(), (item.get("source_pages") or [0])[0]))
     contributors = sorted({r["contributor"] for r in recipes if r["contributor"]})
     payload = {"recipes": recipes, "contributors": contributors}
     output = ROOT / "docs" / "data" / "recipes.json"

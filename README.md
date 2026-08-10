@@ -36,7 +36,7 @@ Mix together macaroons, sugar, and sour cream.
 
 `date_added` is optional. New contributed recipes with this field appear automatically in the site's **Recent additions** section; original imported recipes omit it.
 
-The website's **Add recipe** form requires no account. It downloads a ready-to-file Markdown record; place that file in `content/recipes`, run `python scripts/build_site.py`, and commit the result. Its `date_added` value makes it appear under **Recent additions** automatically.
+The website's **Add recipe** form opens a prefilled file in GitHub. Review it and commit the new file to save it in the archive; a GitHub account with repository access is required. Its `date_added` value makes it appear under **Recent additions** automatically.
 
 ## Re-import from the PDF
 

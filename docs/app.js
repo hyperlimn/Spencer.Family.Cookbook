@@ -10,6 +10,7 @@ const ui={
   devDialog:document.querySelector("#dev-dialog"),devSearch:document.querySelector("#dev-search"),devList:document.querySelector("#dev-list")
 };
 const state={recipes:[],query:"",category:"",contributor:""};
+const repository="https://github.com/hyperlimn/Spencer.Family.Cookbook";
 const escapeHtml=value=>String(value??"").replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
 const normalize=value=>String(value??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const countBy=key=>state.recipes.reduce((result,recipe)=>{const value=recipe[key];if(value)result[value]=(result[value]||0)+1;return result},{});
@@ -52,7 +53,7 @@ function reset(){state.query=state.category=state.contributor="";ui.search.value
 function repositoryPath(file){return file.split("/").map(encodeURIComponent).join("/")}
 function renderDevList(){
   const query=normalize(ui.devSearch.value).trim();const recipes=state.recipes.filter(recipe=>!query||normalize(`${recipe.title} ${recipe.contributor||""}`).includes(query)).slice(0,100);
-  ui.devList.innerHTML=recipes.map(recipe=>`<div class="dev-row"><span><strong>${escapeHtml(recipe.title)}</strong><small>${escapeHtml(recipe.contributor||recipe.category)}</small></span><span class="dev-actions"><a href="https://github.com/hyperlimn/Spencer.Family.Cookbook/edit/main/${repositoryPath(recipe.file)}" target="_blank">Edit</a>${recipe.date_added?`<a class="delete" href="https://github.com/hyperlimn/Spencer.Family.Cookbook/delete/main/${repositoryPath(recipe.file)}" target="_blank">Delete</a>`:""}</span></div>`).join("");
+  ui.devList.innerHTML=recipes.map(recipe=>`<div class="dev-row"><span><strong>${escapeHtml(recipe.title)}</strong><small>${escapeHtml(recipe.contributor||recipe.category)}</small></span><span class="dev-actions"><a href="${repository}/edit/main/${repositoryPath(recipe.file)}" target="_blank">Edit</a>${recipe.date_added?`<a class="delete" href="${repository}/delete/main/${repositoryPath(recipe.file)}" target="_blank">Delete</a>`:""}</span></div>`).join("");
 }
 function openDevMenu(){document.querySelector("#dev-trigger").classList.remove("unlocking");ui.devSearch.value="";renderDevList();ui.devDialog.showModal()}
 const mobileQuery=matchMedia("(max-width: 820px)");
@@ -87,7 +88,9 @@ document.querySelector("#recipe-form").addEventListener("submit",event=>{
   const slug=normalize(values.title).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"family-recipe";
   const ingredients=values.ingredients.split(/\r?\n/).map(line=>line.trim()).filter(Boolean).map(line=>`  - ${JSON.stringify(line)}`).join("\n");
   const content=`---\ntitle: ${JSON.stringify(values.title)}\nslug: ${JSON.stringify(slug)}\ncategory: ${JSON.stringify(values.category)}\ncontributor: ${JSON.stringify(values.contributor)}\nyield: ${JSON.stringify(values.yield||"")}\nsource_pages: []\npdf_page: null\nsource_side: null\nneeds_review: false\ndate_added: ${JSON.stringify(new Date().toISOString().slice(0,10))}\ningredients:\n${ingredients}\n---\n\n${values.directions.trim()}${values.notes.trim()?`\n\n## Family note\n\n${values.notes.trim()}`:""}\n`;
-  const blob=new Blob([content],{type:"text/markdown;charset=utf-8"});const link=document.createElement("a");link.href=URL.createObjectURL(blob);link.download=`${slug}.md`;link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000);document.querySelector("#form-status").textContent=`Saved ${slug}.md — share this file with the family editor.`;
+  const params=new URLSearchParams({filename:`${slug}.md`,value:content});
+  document.querySelector("#form-status").textContent="Finish saving the recipe on GitHub.";
+  window.location.href=`${repository}/new/main/content/recipes?${params}`;
 });
 ui.dialog.addEventListener("click",event=>{if(event.target===ui.dialog)closeRecipe()});
 document.addEventListener("keydown",event=>{if(event.key==="/"&&!/input|textarea|select/i.test(event.target.tagName)){event.preventDefault();ui.search.focus()}});

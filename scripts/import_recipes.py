@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw-pages.json"
 RECIPES = ROOT / "content" / "recipes"
+TITLE_MIN_SIZE = 27.5
 
 SECTIONS = [
     (1, 39, "Appetizers"),
@@ -25,6 +26,19 @@ SECTIONS = [
 ]
 
 OVERRIDES = {
+    (125, "Grandma’s Angel Food Cake Icing"): {
+        "contributor": "Grandma Philipps",
+        "ingredients": ["4 Tbsp. shortening", "2 Tbsp. butter", "2 cups sifted powdered sugar", "4 Tbsp. pineapple juice", "½ tsp. salt"],
+        "directions": ["Cream together all ingredients and beat until creamy. Double the recipe. Serves 12."],
+    },
+    (188, "Stove Top® One-Dish Chicken Bake with Vegetables"): {
+        "ingredients": ["1 2/3 cups hot water", "1 pkg. Stove Top® Stuffing Mix for Chicken", "1½ lb. boneless, skinless chicken breasts, cut into bite-sized pieces", "1 can (10¾ oz.) condensed cream of chicken soup", "1/3 cup sour cream", "1½ cups shredded mozzarella cheese", "1 pkg. (16 oz.) frozen mixed vegetables, thawed and drained"],
+        "directions": ["Preheat oven to 400º. Add hot water to stuffing mix; stir just until moistened. Set aside. Place chicken in a 3-quart baking dish. Mix soup, sour cream, cheese, and vegetables; spoon over chicken. Top with prepared stuffing.", "Bake for 30 minutes or until chicken is cooked through and has no pink."],
+    },
+    (260, "Frosted 7-Up® Fruit Jell-O® Salad"): {
+        "ingredients": ["2 (3 oz.) pkgs. orange Jell-O® (I use sugar free)", "2 cups boiling water", "2 cups 7-Up® (I use diet soda)", "1 can crushed pineapple in its own juice, drained", "2 large bananas, sliced", "1 cup miniature marshmallows", "Topping: ½ cup sugar", "1 Tbsp. flour", "1 cup pineapple juice", "1 egg, beaten", "2 Tbsp. butter", "1 cup whipped cream or whipped topping", "¼ cup finely shredded cheese (optional)"],
+        "directions": ["Dissolve gelatin in boiling water. Add soda and chill until partially set. Add remaining fruit and marshmallows and chill.", "For the topping, combine sugar and flour in a saucepan. Stir in pineapple juice and egg. Continue stirring constantly until thick; add butter. Cool. Fold in whipped topping and spread over gelatin. If desired, sprinkle with cheese. (My personal favorite.)"],
+    },
     (212, "Pinto Beans & Cornbread"): {
         "ingredients": ["2 lbs. pinto beans", "1 ham bone", "Salt and pepper, to taste", "Raw onions, for serving", "Cornbread, for serving"],
         "directions": ["Cover pinto beans with water and bring to a boil. Drain in a colander and rinse. Put beans in a stock pot and cover with plenty of water. Add the ham bone, salt, and pepper. Bring to a boil, then reduce to medium heat and cook slowly for about 3 hours, adding more water as needed to keep the beans soupy. Serve with raw onions and cornbread."],
@@ -67,7 +81,8 @@ def group_lines(items: list[dict]) -> list[dict]:
 
 
 def title_clusters(lines: list[dict]) -> list[list[dict]]:
-    titles = [line for line in lines if line["size"] >= 30 and line["text"] != "Index"]
+    # Six pages use a 28-point title instead of the usual 36-point title.
+    titles = [line for line in lines if line["size"] >= TITLE_MIN_SIZE and line["text"] != "Index"]
     clusters: list[list[dict]] = []
     for line in titles:
         if not clusters or clusters[-1][-1]["y"] - line["y"] > 62:
@@ -146,6 +161,10 @@ def main() -> None:
     for page in pages:
         number = page["printed_page"]
         lines = [line for line in group_lines(page["items"]) if not (line["y"] < 42 and line["text"] == str(number))]
+        # Printer spreads also contain index halves. A page number near the
+        # bottom of an index column can look like its printed page footer.
+        if any(line["text"] == "Index" for line in lines):
+            continue
         clusters = title_clusters(lines)
         if not clusters:
             pending_continuation.extend(line for line in lines if line["text"] != "Index")

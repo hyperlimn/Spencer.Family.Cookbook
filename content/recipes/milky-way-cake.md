@@ -3,7 +3,7 @@ title: "Milky Way Cake"
 slug: "milky-way-cake"
 category: "Desserts"
 contributor: null
-source_pages: [106]
+source_pages: [106, 107]
 pdf_page: 111
 source_side: "right"
 needs_review: false
@@ -22,3 +22,9 @@ Combine flour and salt; combine buttermilk and soda. Add dry ingredients to crea
 Pour batter into 3 greased and floured 9-inch cake pans. Bake at 350º for 30 minutes or until done. When layers are completely cool, frost with chocolate marshmallow frosting.
 
 Continued...
+
+Chocolate Marshmallow Frosting
+
+2 cups sugar 1 (13 oz.) can evaporated milk ½ cup butter 1 (6 oz.) pkg. semisweet chocolate pieces 1 cup marshmallow cream
+
+Combine sugar, milk, and butter in a saucepan. Cook over medium heat until a small amount dropped in cold water forms a soft ball. Remove from heat and add chocolate pieces and marshmallow cream. Stir until melted.
