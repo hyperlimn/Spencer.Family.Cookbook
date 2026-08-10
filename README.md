@@ -4,7 +4,7 @@ A searchable, editable web edition of Kathy Spencer's family cookbook. The site 
 
 ## Edit a recipe
 
-Open a file in `content/recipes`, make the correction, and run:
+Open its file in `content/recipes` or `content/new-recipes`, make the correction, and run:
 
 ```powershell
 python scripts/build_site.py
@@ -36,7 +36,9 @@ Mix together macaroons, sugar, and sour cream.
 
 `date_added` is optional. New contributed recipes with this field appear automatically in the site's **Recent additions** section; original imported recipes omit it.
 
-The website's **Add recipe** form sends a ready-to-file Markdown record to the family editor through Formspree. After reviewing it, place the record in `content/recipes`, run `python scripts/build_site.py`, and commit the result. Its `date_added` value makes it appear under **Recent additions** automatically.
+The website's **Add recipe** form sends a ready-to-file Markdown record to the family editor through Formspree. After reviewing it, save the Markdown from the message using its suggested filename and upload it to `content/new-recipes`. Commit the upload to `main`; the existing GitHub workflow automatically validates it, adds it to the archive, and deploys the updated site. No local rebuild is required.
+
+To add one through GitHub, open `content/new-recipes`, choose **Add file → Upload files**, drop in the `.md` file, and commit it. New submissions retain their `date_added` value and appear under **Recent additions** automatically. A duplicate recipe slug stops the deployment instead of silently replacing an existing archive entry.
 
 ## Re-import from the PDF
 
