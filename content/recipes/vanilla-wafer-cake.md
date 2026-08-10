@@ -15,7 +15,6 @@ ingredients:
   - "½ cup milk"
   - "1 (7 oz.) package flaked coconut"
   - "1 cup chopped pecans"
-  - "Cream butter. Add sugar, beat until smooth."
 ---
 
-Add eggs, one at a time, beating well after each addition. Add crushed vanilla wafers alternately with milk. Add coconut and pecans. Pour batter into a greased and floured tube pan. Bake at 275º for 1½ hours. Let cool before removing it from pan.
+Cream butter. Add sugar, beat until smooth. Add eggs, one at a time, beating well after each addition. Add crushed vanilla wafers alternately with milk. Add coconut and pecans. Pour batter into a greased and floured tube pan. Bake at 275º for 1½ hours. Let cool before removing it from pan.

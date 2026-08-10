@@ -6,10 +6,10 @@ contributor: null
 source_pages: [242]
 pdf_page: 117
 source_side: "left"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "1 cup brown sugar, packed"
+  - "1 cup pineapple juice"
 ---
-
-1 cup brown sugar, packed 1 cup pineapple juice
 
 Baste for last 30 to 45 minutes.

@@ -6,8 +6,13 @@ contributor: null
 source_pages: [212]
 pdf_page: 147
 source_side: "left"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "2 lbs. pinto beans"
+  - "1 ham bone"
+  - "Salt and pepper, to taste"
+  - "Raw onions, for serving"
+  - "Cornbread, for serving"
 ---
 
-Cover 2 lbs. pinto beans with water; bring to boil. Drain in colander & rinse. Put beans in stock pot & cover with lots of wa- ter. Add ham bone & salst & pepper to taste. Bring to boil then turn to medium heat & cook slowly for about 3 hours. (To keep it soupy, you may need to add more water.) Add raw onions when serving & serve with corn- bread.
+Cover pinto beans with water and bring to a boil. Drain in a colander and rinse. Put beans in a stock pot and cover with plenty of water. Add the ham bone, salt, and pepper. Bring to a boil, then reduce to medium heat and cook slowly for about 3 hours, adding more water as needed to keep the beans soupy. Serve with raw onions and cornbread.

@@ -6,7 +6,7 @@ contributor: ". . . Continued"
 source_pages: [117]
 pdf_page: 122
 source_side: "left"
-needs_review: true
+needs_review: false
 ingredients:
   - "Third Layer Ingredients:"
   - "1 cup semisweet chocolate chips"

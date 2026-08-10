@@ -6,7 +6,7 @@ contributor: null
 source_pages: [187, 188]
 pdf_page: 172
 source_side: "right"
-needs_review: true
+needs_review: false
 ingredients:
   - "4 bone-in pork chops, ¾ inch thick"
   - "1 tsp. oil"

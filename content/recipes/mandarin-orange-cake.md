@@ -6,7 +6,7 @@ contributor: "Patty Peterson"
 source_pages: [124, 125]
 pdf_page: 129
 source_side: "right"
-needs_review: true
+needs_review: false
 ingredients:
   - "1 yellow cake mix"
   - "4 eggs (3 if large or extra large)"

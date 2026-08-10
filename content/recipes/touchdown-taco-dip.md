@@ -6,7 +6,7 @@ contributor: "Vicky East"
 source_pages: [33]
 pdf_page: 34
 source_side: "left"
-needs_review: true
+needs_review: false
 ingredients:
   - "1 (16 oz.) can refried beans"
   - "1 (8 oz.) pkg. cream cheese, softened"

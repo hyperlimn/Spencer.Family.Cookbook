@@ -6,7 +6,7 @@ contributor: null
 source_pages: [221]
 pdf_page: 140
 source_side: "right"
-needs_review: true
+needs_review: false
 ingredients:
   - "½ cup orange juice"
   - "3 Tbsp. orange juice concentrate"
@@ -25,22 +25,6 @@ ingredients:
   - "Hot cooked rice"
   - "4 green onions, thinly sliced, div."
   - "½ cup orange marmalade"
-  - "In a large resealable plastic bag, combine orange juice"
-  - "concentrate, 2 tablespoons oil, soy sauce ,and garlic."
-  - "Add chicken; seal bag and turn to coat. Refrigerate for"
-  - "2 – 3 hours. Remove chicken; reserve marinade. In a"
-  - "skillet, cook chicken in remaining oil until juices run"
-  - "clear."
-  - "Meanwhile, in a saucepan, sauté walnuts in butter until"
-  - "lightly browned; remove and set aside. Set aside ¼ cup"
-  - "green onions for garnish. Add remaining onions to"
-  - "saucepan; sauté until tender. Add reserved marinade"
-  - "and the next eight ingredients. Bring to a rolling boil;"
-  - "boil for 2 minutes."
-  - "Reduce heat; simmer, uncovered, for 5 – 10 minutes or"
-  - "until sauce reaches desired consistency. Serve chicken"
-  - "over rice; top with sauce and reserved walnuts and"
-  - "onions."
 ---
 
-Directions were not separated in the source layout. See the original page.
+In a large resealable plastic bag, combine orange juice concentrate, 2 tablespoons oil, soy sauce ,and garlic. Add chicken; seal bag and turn to coat. Refrigerate for 2 – 3 hours. Remove chicken; reserve marinade. In a skillet, cook chicken in remaining oil until juices run clear. Meanwhile, in a saucepan, sauté walnuts in butter until lightly browned; remove and set aside. Set aside ¼ cup green onions for garnish. Add remaining onions to saucepan; sauté until tender. Add reserved marinade and the next eight ingredients. Bring to a rolling boil; boil for 2 minutes. Reduce heat; simmer, uncovered, for 5 – 10 minutes or until sauce reaches desired consistency. Serve chicken over rice; top with sauce and reserved walnuts and onions.

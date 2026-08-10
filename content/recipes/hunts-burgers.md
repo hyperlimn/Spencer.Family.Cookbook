@@ -6,11 +6,15 @@ contributor: "Betty Potts"
 source_pages: [192]
 pdf_page: 167
 source_side: "left"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "6 hamburger buns"
+  - "1 lb. ground beef"
+  - "2 Tbsp. finely chopped onion"
+  - "1 tsp. salt"
+  - "1/8 tsp. pepper"
+  - "2 (8 oz.) cans tomato sauce"
 ---
-
-6 hamburger buns 1 lb. ground beef 2 Tbsp. finely chopped onion 1 tsp. salt 1/8 tsp. pepper 2 (8 oz.) cans tomato sauce
 
 Hollow out center of top portion of buns. Crumble up removed portion of bread & use it in meat mixture.
 

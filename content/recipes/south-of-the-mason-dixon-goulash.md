@@ -6,11 +6,12 @@ contributor: "Sue Zills"
 source_pages: [162]
 pdf_page: 168
 source_side: "left"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "Brown 1 lb. ground beef with 1 large onion, diced"
+  - "Salt & pepper to taste"
+  - "Add Garlic powder and red crushed pepper to taste"
 ---
-
-Brown 1 lb. ground beef with 1 large onion, diced Salt & pepper to taste Add Garlic powder and red crushed pepper to taste
 
 Cook separately 1 box of macaroni
 

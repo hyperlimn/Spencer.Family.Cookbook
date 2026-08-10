@@ -6,11 +6,11 @@ contributor: "Betty Sutton"
 source_pages: [84]
 pdf_page: 89
 source_side: "right"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "Preheat oven to 350º. Spray 13-x 9-inch baking"
+  - "pan with Pam®."
 ---
-
-Preheat oven to 350º. Spray 13-x 9-inch baking pan with Pam®.
 
 1 box “cook and serve” vanilla pudding (not instant) 2 cups milk 1 box yellow cake mix 1 (11 oz.) bag of butterscotch chips
 

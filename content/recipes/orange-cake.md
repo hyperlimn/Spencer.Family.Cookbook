@@ -6,11 +6,14 @@ contributor: null
 source_pages: [119]
 pdf_page: 124
 source_side: "left"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "Mix together following ingredients and beat:"
+  - "1 box yellow cake mix"
+  - "3eggs"
+  - "¾ cup oil"
+  - "1 (11 oz.) can mandarin oranges and juice"
 ---
-
-Mix together following ingredients and beat: 1 box yellow cake mix 3eggs ¾ cup oil 1 (11 oz.) can mandarin oranges and juice
 
 Pour into 9-x 13-inch greased, floured pan. Bake at 350º for 25 – 30 minutes. Cool.
 

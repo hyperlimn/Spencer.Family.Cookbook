@@ -6,11 +6,11 @@ contributor: "Sandy Avery"
 source_pages: [189]
 pdf_page: 170
 source_side: "right"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "Blend 3 oz. softened cream cheese and"
+  - "2 Tbsp. butter until smooth."
 ---
-
-Blend 3 oz. softened cream cheese and 2 Tbsp. butter until smooth.
 
 Add: 2 cups cooked chicken, approximately 1 lb. ¼ tsp. salt 1/8 tsp. pepper 2 Tbsp. milk 1 Tbsp. chopped onion 1 Tbsp. chopped pimento, optional
 

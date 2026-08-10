@@ -6,11 +6,12 @@ contributor: null
 source_pages: [284]
 pdf_page: 73
 source_side: "left"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "1 bunch leaf lettuce, torn"
+  - "6 – 8 radishes, thinly sliced (optional)"
+  - "4 – 6 green onions with tops, thinly sliced"
 ---
-
-1 bunch leaf lettuce, torn 6 – 8 radishes, thinly sliced (optional) 4 – 6 green onions with tops, thinly sliced
 
 Dressing: 4 – 5 bacon strips 2 Tbsp. red wine vinegar 1 Tbsp. lemon juice 1 tsp. sugar ½ tsp. pepper
 

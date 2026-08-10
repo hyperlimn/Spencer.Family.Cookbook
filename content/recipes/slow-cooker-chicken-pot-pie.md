@@ -6,7 +6,7 @@ contributor: null
 source_pages: [332]
 pdf_page: 24
 source_side: "right"
-needs_review: true
+needs_review: false
 ingredients:
   - "Jennifer Novotny"
   - "Chicken Pot Pie"
@@ -26,12 +26,6 @@ ingredients:
   - "Parsley"
   - "Salt/Pepper"
   - "Garlic powder"
-  - "Place chopped & frozen veggies in slow cooker. Place frozen"
-  - "chicken breasts on top of veggies. Add all 3 cans of soup and"
-  - "water over chicken. Season w/spices to taste. Cook on Low for"
-  - "6-8 hours (6 usually is plenty). When cook cycle is complete,"
-  - "shred the chicken w/2 forks and stir all ingredients. Serve with"
-  - "your favorite biscuits ."
 ---
 
-Directions were not separated in the source layout. See the original page.
+Place chopped & frozen veggies in slow cooker. Place frozen chicken breasts on top of veggies. Add all 3 cans of soup and water over chicken. Season w/spices to taste. Cook on Low for 6-8 hours (6 usually is plenty). When cook cycle is complete, shred the chicken w/2 forks and stir all ingredients. Serve with your favorite biscuits .

@@ -24,6 +24,17 @@ SECTIONS = [
     (333, 339, "Soups"),
 ]
 
+OVERRIDES = {
+    (212, "Pinto Beans & Cornbread"): {
+        "ingredients": ["2 lbs. pinto beans", "1 ham bone", "Salt and pepper, to taste", "Raw onions, for serving", "Cornbread, for serving"],
+        "directions": ["Cover pinto beans with water and bring to a boil. Drain in a colander and rinse. Put beans in a stock pot and cover with plenty of water. Add the ham bone, salt, and pepper. Bring to a boil, then reduce to medium heat and cook slowly for about 3 hours, adding more water as needed to keep the beans soupy. Serve with raw onions and cornbread."],
+    },
+    (35, "Vegetable Dip"): {
+        "ingredients": ["2 (8 oz.) sour cream", "1 cup mayonnaise", "2 tsp. dill weed", "2 tsp. seasoned salt", "2 tsp. onion flakes", "Raw vegetables, cut into bite-sized pieces"],
+        "directions": ["Stir together the sour cream, mayonnaise, dill weed, seasoned salt, and onion flakes. Keep refrigerated. Serve with raw vegetables."],
+    },
+}
+
 
 def category(page: int) -> str:
     return next((name for start, end, name in SECTIONS if start <= page <= end), "Uncategorized")
@@ -105,18 +116,25 @@ def split_content(body: list[dict]) -> tuple[list[dict], list[dict]]:
     """Separate ingredient and method text, including recipes set in one font."""
     ingredients = [line for line in body if line["size"] <= 16.5]
     directions = [line for line in body if line["size"] > 16.5]
-    if ingredients:
+    if ingredients and directions:
         return ingredients, directions
     method_words = (
-        "add ", "arrange ", "bake ", "beat ", "blend ", "boil ", "brown ", "chill ",
-        "combine ", "cook ", "cover ", "cut ", "drain ", "fold ", "heat ", "in a ",
-        "layer ", "line ", "melt ", "mix ", "place ", "pour ", "preheat ", "roll ",
-        "serve ", "shape ", "simmer ", "spread ", "stir ", "top ", "using ", "whisk ",
+        "add ", "after ", "arrange ", "bake ", "baste ", "beat ", "blend ", "boil ",
+        "bring ", "brown ", "chill ", "chop ", "combine ", "cook ", "cover ", "cream ",
+        "cut ", "defrost ", "dip ", "drain ", "fold ", "grease ", "heat ", "hollow ",
+        "in a ", "layer ", "lightly ", "line ", "melt ", "microwave ", "mix ", "place ",
+        "pour ", "preheat ", "put ", "roll ", "serve ", "shape ", "simmer ", "spread ",
+        "sprinkle ", "stir ", "top ", "unroll ", "using ", "whip ", "whisk ",
     )
     method_index = next((i for i, line in enumerate(body) if line["text"].lower().startswith(method_words)), None)
     if method_index is not None and method_index > 0:
         return body[:method_index], body[method_index:]
-    return [], body
+    for index, (previous, line) in enumerate(zip(body, body[1:]), 1):
+        if previous["y"] - line["y"] > 29:
+            first_block = " ".join(item["text"] for item in body[:index]).lower()
+            if re.search(r"\d|\b(cup|tsp|tbsp|pkg|oz|lb|can|ingredients?)\b", first_block):
+                return body[:index], body[index:]
+    return ingredients, directions or body
 
 
 def main() -> None:
@@ -147,7 +165,6 @@ def main() -> None:
             if is_continuation and records:
                 records[-1]["extra_lines"].extend(body)
                 records[-1]["source_pages"].append(number)
-                records[-1]["needs_review"] = True
                 continue
 
             contributor = None
@@ -172,9 +189,12 @@ def main() -> None:
     RECIPES.mkdir(parents=True, exist_ok=True)
     used: dict[str, int] = defaultdict(int)
     for record in records:
+        override = OVERRIDES.get((record["printed_page"], record["title"]))
+        if override:
+            record.update(override)
         if record["extra_lines"]:
             record["directions"].extend(paragraphs(record["extra_lines"]))
-            record["needs_review"] = True
+        record["needs_review"] = not record["ingredients"] or not record["directions"]
         base = slugify(record["title"])
         used[base] += 1
         slug = base if used[base] == 1 else f"{base}-{record['printed_page']}"

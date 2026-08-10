@@ -6,11 +6,16 @@ contributor: "Frances Spencer"
 source_pages: [71]
 pdf_page: 76
 source_side: "left"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "Mix together:"
+  - "1 cup flour"
+  - "1 cup sugar"
+  - "1 cup milk"
+  - "Pinch of salt"
+  - "1 tsp. baking powder"
+  - "2 Tbsp. melted butter"
 ---
-
-Mix together: 1 cup flour 1 cup sugar 1 cup milk Pinch of salt 1 tsp. baking powder 2 Tbsp. melted butter
 
 Pour into buttered 9-x 13-inch pan.
 

@@ -6,7 +6,7 @@ contributor: null
 source_pages: [228]
 pdf_page: 131
 source_side: "left"
-needs_review: true
+needs_review: false
 ingredients:
   - "10 cups diced cooked chicken"
   - "10 cups chopped celery"

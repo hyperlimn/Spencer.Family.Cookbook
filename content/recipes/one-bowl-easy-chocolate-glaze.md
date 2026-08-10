@@ -6,11 +6,11 @@ contributor: null
 source_pages: [137]
 pdf_page: 142
 source_side: "left"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "1 (8 oz.) whipped topping, thawed"
+  - "6 squares Baker’s Semisweet Baking Chocolate"
 ---
-
-1 (8 oz.) whipped topping, thawed 6 squares Baker’s Semisweet Baking Chocolate
 
 Microwave frozen whipped topping and chocolate in medium microwaveable bowl on high for 1 minute. Stir. Microwave an additional 30 seconds to 1 minute or until chocolate is melted and mixture is shiny and smooth.
 

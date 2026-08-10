@@ -6,7 +6,7 @@ contributor: null
 source_pages: [161]
 pdf_page: 167
 source_side: "right"
-needs_review: true
+needs_review: false
 ingredients:
   - "1 tube (10 oz.) refrigerated buttermilk biscuits"
   - "1 lb. ground beef"
@@ -22,12 +22,8 @@ ingredients:
   - "vinegar and chili powder; stir until smooth. Add to meat"
   - "and mix well."
   - "Divide the meat mixture among biscuit-lined muffin cups,"
-  - "using about ¼ cup for each. Sprinkle with cheese. Bake"
-  - "at 375º for 18 to 20 minutes or until biscuits are golden"
-  - "brown. Cool for 5 minutes before removing from tin and"
-  - "serving."
-  - "Note: You may substitute your favorite Sloppy Joes"
-  - "recipe. I sometimes use Manwich® and “doctor it up.”"
 ---
 
-Directions were not separated in the source layout. See the original page.
+using about ¼ cup for each. Sprinkle with cheese. Bake at 375º for 18 to 20 minutes or until biscuits are golden brown. Cool for 5 minutes before removing from tin and serving.
+
+Note: You may substitute your favorite Sloppy Joes recipe. I sometimes use Manwich® and “doctor it up.”

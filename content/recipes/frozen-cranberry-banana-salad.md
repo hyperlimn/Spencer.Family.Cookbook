@@ -6,7 +6,7 @@ contributor: null
 source_pages: [287]
 pdf_page: 70
 source_side: "right"
-needs_review: true
+needs_review: false
 ingredients:
   - "1 can (20 oz.) pineapple tidbits"
   - "5 medium firm bananas, halved lengthwise and"

@@ -17,8 +17,6 @@ ingredients:
   - "3 cups dry quick-cooking oats"
   - "2 tsp. vanilla"
   - "Mix, sugar, cocoa, milk, and butter in saucepan."
-  - "Put on medium heat and cook until it starts to"
-  - "boil. Remove from heat. Cool for one minute."
 ---
 
-Add vanilla, salt, peanut butter, and oats. Stir well. Drop by teaspoonful on wax paper. Let cool before eating.
+Put on medium heat and cook until it starts to boil. Remove from heat. Cool for one minute. Add vanilla, salt, peanut butter, and oats. Stir well. Drop by teaspoonful on wax paper. Let cool before eating.

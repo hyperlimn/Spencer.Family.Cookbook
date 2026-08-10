@@ -6,7 +6,7 @@ contributor: null
 source_pages: [204]
 pdf_page: 155
 source_side: "left"
-needs_review: true
+needs_review: false
 ingredients:
   - "1 lb. boneless, skinless chicken breasts, cut into"
   - "bite-sized pieces"

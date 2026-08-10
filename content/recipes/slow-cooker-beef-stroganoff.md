@@ -6,7 +6,7 @@ contributor: null
 source_pages: [329]
 pdf_page: 27
 source_side: "left"
-needs_review: true
+needs_review: false
 ingredients:
   - "2 lbs. beef stew meat"
   - "2 cans cream of mushroom soup (or golden mushroom soup)"
@@ -16,10 +16,6 @@ ingredients:
   - "1 Tbsp. Worcestershire sauce"
   - "Can of mushrooms, if desired"
   - "Salt and pepper to taste."
-  - "Place all ingredients in slow cooker (except cream cheese or"
-  - "sour cream); place on high for 5 hours or low for 8 hours."
-  - "**Add cream cheese or sour cream just before serving until"
-  - "melted. Serve over cooked egg noodles."
 ---
 
-Directions were not separated in the source layout. See the original page.
+Place all ingredients in slow cooker (except cream cheese or sour cream); place on high for 5 hours or low for 8 hours. **Add cream cheese or sour cream just before serving until melted. Serve over cooked egg noodles.

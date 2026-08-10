@@ -6,11 +6,11 @@ contributor: "Pat Ruzga"
 source_pages: [101]
 pdf_page: 106
 source_side: "left"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "Melt together: 6 oz. unsweetened chocolate"
+  - "1 cup butter"
 ---
-
-Melt together: 6 oz. unsweetened chocolate 1 cup butter
 
 Add: 2 cups sugar 4 large eggs
 

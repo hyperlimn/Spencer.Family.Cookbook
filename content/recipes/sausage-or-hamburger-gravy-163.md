@@ -6,11 +6,11 @@ contributor: "Sue Zills"
 source_pages: [163]
 pdf_page: 169
 source_side: "right"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "Brown 1 lb. of ground meat (ground beef or"
+  - "sausage) in 2 Tbsp. of olive oil."
 ---
-
-Brown 1 lb. of ground meat (ground beef or sausage) in 2 Tbsp. of olive oil.
 
 Sprinkle over browned meat 1/3 cup of flour; stir.
 

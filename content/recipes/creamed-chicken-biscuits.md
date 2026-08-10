@@ -6,11 +6,11 @@ contributor: "Sue Zills"
 source_pages: [164]
 pdf_page: 170
 source_side: "left"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "Boil chicken pieces (6 thighs, 8 drum sticks, and 4"
+  - "chicken breasts with skin.)"
 ---
-
-Boil chicken pieces (6 thighs, 8 drum sticks, and 4 chicken breasts with skin.)
 
 Cook until meat is tender and has no pink color. (About 45 minutes to an hour on medium heat. The chicken should fall off the bone.)
 

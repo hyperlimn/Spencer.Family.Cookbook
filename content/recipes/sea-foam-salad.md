@@ -6,7 +6,7 @@ contributor: "Kathy Spencer"
 source_pages: [259, 260]
 pdf_page: 97
 source_side: "left"
-needs_review: true
+needs_review: false
 ingredients:
   - "1 lg. can Bartlett pears"
   - "1 pkg. lime Jell-O® (3 oz.)"

@@ -6,7 +6,7 @@ contributor: "Char Knox"
 source_pages: [152, 153]
 pdf_page: 157
 source_side: "right"
-needs_review: true
+needs_review: false
 ingredients:
   - "1½ cups butter 2 Tbsp. lukewarm milk"
   - "3 Tbsp. sugar 3 well-beaten egg yolks"

@@ -6,7 +6,7 @@ contributor: "Betty Sutton"
 source_pages: [81, 82]
 pdf_page: 86
 source_side: "left"
-needs_review: true
+needs_review: false
 ingredients:
   - "Continued..."
 ---

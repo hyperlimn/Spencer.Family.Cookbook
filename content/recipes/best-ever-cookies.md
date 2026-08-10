@@ -6,7 +6,7 @@ contributor: "Grandma Philipps"
 source_pages: [122]
 pdf_page: 127
 source_side: "right"
-needs_review: true
+needs_review: false
 ingredients:
   - "1 ½ cups brown sugar"
   - "1 cup butter or shortening"
@@ -17,10 +17,6 @@ ingredients:
   - "1 Tbsp. cloves"
   - "1 cup nuts"
   - "1 cup raisins"
-  - "Cream sugar and shortening. Add eggs. Add flour,"
-  - "soda, and spices. Add 1 cup nuts and 1 cup raisins."
-  - "Drop by teaspoonful on cookie sheet. Bake at"
-  - "375º for 10 minutes."
 ---
 
-Directions were not separated in the source layout. See the original page.
+Cream sugar and shortening. Add eggs. Add flour, soda, and spices. Add 1 cup nuts and 1 cup raisins. Drop by teaspoonful on cookie sheet. Bake at 375º for 10 minutes.

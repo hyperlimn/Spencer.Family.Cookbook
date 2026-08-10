@@ -6,7 +6,7 @@ contributor: null
 source_pages: [154]
 pdf_page: 159
 source_side: "right"
-needs_review: true
+needs_review: false
 ingredients:
   - "2 bags Pepperidge Farm Chessman Cookies"
   - "6 – 8 bananas, sliced"
@@ -16,18 +16,8 @@ ingredients:
   - "1 (14 oz.) can sweetened condensed milk"
   - "1 (12 oz.) container frozen whipped topping,"
   - "thawed"
-  - "Line bottom of 9-x 13-x 2-inch dish with one bag of"
-  - "cookies."
-  - "Place bananas on top."
-  - "In a bowl, blend milk with pudding; mix well with"
-  - "hand-held electric mixer."
-  - "Beat cream cheese and condensed milk together in"
-  - "another bowl until smooth."
-  - "Fold in whipped topping and add to pudding"
-  - "mixture, stirring until well blended."
-  - "Pour mixture over cookies and bananas and cover with re-"
-  - "maining cookies. Refrigerate."
-  - "Serves 12"
 ---
 
-Directions were not separated in the source layout. See the original page.
+Line bottom of 9-x 13-x 2-inch dish with one bag of cookies. Place bananas on top. In a bowl, blend milk with pudding; mix well with hand-held electric mixer. Beat cream cheese and condensed milk together in another bowl until smooth. Fold in whipped topping and add to pudding mixture, stirring until well blended. Pour mixture over cookies and bananas and cover with re- maining cookies. Refrigerate.
+
+Serves 12

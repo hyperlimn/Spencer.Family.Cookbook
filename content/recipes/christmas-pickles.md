@@ -6,11 +6,11 @@ contributor: "Earldean Spencer"
 source_pages: [252]
 pdf_page: 106
 source_side: "right"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "Drain 1 quart dill pickles (plain Heinz® dill"
+  - "pickles), cut into strips and place back in jar."
 ---
-
-Drain 1 quart dill pickles (plain Heinz® dill pickles), cut into strips and place back in jar.
 
 Mix together:
 

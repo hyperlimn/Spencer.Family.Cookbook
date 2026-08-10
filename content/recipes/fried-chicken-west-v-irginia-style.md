@@ -6,7 +6,7 @@ contributor: "Sue Zills"
 source_pages: [165]
 pdf_page: 171
 source_side: "right"
-needs_review: true
+needs_review: false
 ingredients:
   - "Lay chicken pieces out on wax paper for 1 hour before"
   - "cooking. (Your choice of chicken pieces — chicken"
@@ -18,11 +18,8 @@ ingredients:
   - "Just before placing chicken into frying pan with olive oil"
   - "heated to 425º, roll chicken again in flour. The moisture"
   - "will pick up more breading, and it will be crispier."
-  - "Place chicken in hot oil, turning often, for 30 to 40"
-  - "minutes, (depending on the size of chicken pieces)."
-  - "Turn heat down after initial browning of chicken; and"
-  - "before removing chicken from pan, turn heat back up to"
-  - "425º to make chicken crispy."
 ---
 
-Directions were not separated in the source layout. See the original page.
+Place chicken in hot oil, turning often, for 30 to 40 minutes, (depending on the size of chicken pieces).
+
+Turn heat down after initial browning of chicken; and before removing chicken from pan, turn heat back up to 425º to make chicken crispy.

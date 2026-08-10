@@ -6,11 +6,13 @@ contributor: null
 source_pages: [121]
 pdf_page: 126
 source_side: "left"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "Mix together:"
+  - "1 box German or Swiss cake mix"
+  - "1/3 cup Carnation® evaporated milk"
+  - "¾ cup melted butter"
 ---
-
-Mix together: 1 box German or Swiss cake mix 1/3 cup Carnation® evaporated milk ¾ cup melted butter
 
 Put one half of cake mixture in 9-x 13-inch pan. Bake at 350 º for 6 minutes.
 

@@ -6,11 +6,11 @@ contributor: null
 source_pages: [231]
 pdf_page: 128
 source_side: "right"
-needs_review: true
-ingredients: []
+needs_review: false
+ingredients:
+  - "Brown 1 lb. ground beef in a skillet. Add ½ cup"
+  - "salsa and 1 package taco seasoning mix."
 ---
-
-Brown 1 lb. ground beef in a skillet. Add ½ cup salsa and 1 package taco seasoning mix.
 
 Place a few handfuls tortilla chips in baking dish. Top with half of the ground beef, chopped tomatoes, and shredded Mexican Style Taco Shredded Cheese. Repeat layers.
 
