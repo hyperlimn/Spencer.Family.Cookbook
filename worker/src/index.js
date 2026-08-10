@@ -152,8 +152,17 @@ export default {
       return json({ ok: true, pull_request: pull.html_url }, 201, origin);
     } catch (error) {
       console.error(error.details || error);
-      const status = error.status === 409 ? 409 : 502;
-      return json({ error: status === 409 ? error.message : "Could not create the recipe review." }, status, origin);
+      if (error.status === 409) return json({ error: error.message }, 409, origin);
+      if (error.status === 401) {
+        return json({ error: "GitHub authentication failed. Check the GITHUB_TOKEN secret." }, 502, origin);
+      }
+      if (error.status === 403) {
+        return json({ error: "GitHub denied access. Check the token's repository permissions." }, 502, origin);
+      }
+      if (error.status === 404) {
+        return json({ error: "The configured GitHub repository or branch was not found." }, 502, origin);
+      }
+      return json({ error: "Could not create the recipe review." }, 502, origin);
     }
   },
 };
