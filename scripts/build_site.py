@@ -28,8 +28,12 @@ def parse_recipe(path: Path) -> dict:
     _, front, body = raw.split("---", 2)
     data, active_list = {}, None
     for line in front.strip().splitlines():
-        if line.startswith("  - ") and active_list:
-            data[active_list].append(parse_scalar(line[4:]))
+        list_item = re.match(r"^\s*[-*]\s+(.+)$", line)
+        if list_item and active_list:
+            # Email clients commonly remove YAML's leading spaces when Markdown is
+            # copied from a message. Accept both the canonical indented form and
+            # unindented Markdown bullets so a submission is not silently emptied.
+            data[active_list].append(parse_scalar(list_item.group(1)))
         elif ":" in line:
             key, value = line.split(":", 1)
             if value.strip():
