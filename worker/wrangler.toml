@@ -1,0 +1,9 @@
+name = "spencer-family-cookbook-submissions"
+main = "src/index.js"
+compatibility_date = "2026-08-10"
+
+[vars]
+ALLOWED_ORIGIN = "https://hyperlimn.github.io"
+GITHUB_OWNER = "hyperlimn"
+GITHUB_REPO = "Spencer.Family.Cookbook"
+GITHUB_BRANCH = "main"
