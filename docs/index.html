@@ -14,7 +14,7 @@
 <body>
   <header class="site-header">
     <a class="brand" href="#" aria-label="Spencer Family Cookbook home">
-      <span class="brand-mark" aria-hidden="true">S</span>
+      <span class="brand-mark" id="dev-trigger" aria-hidden="true">S</span>
       <span><strong>Spencer</strong><small>Family Cookbook</small></span>
     </a>
     <nav class="primary-nav" aria-label="Cookbook links">
@@ -55,7 +55,6 @@
           <summary>Contributors</summary>
           <div id="contributors" class="filters contributor-list"></div>
         </details>
-        <label class="check review" hidden><input type="checkbox" id="review-only"> Needs review</label>
         <section id="recent-additions" class="recent" hidden>
           <h2>Recent additions</h2>
           <div id="recent-list"></div>
@@ -92,6 +91,16 @@
         <label>Family note <small>Optional</small><textarea name="notes" rows="3" placeholder="Who made it, when it was served, or why it matters…"></textarea></label>
         <div class="form-actions"><span id="form-status" aria-live="polite">Your entry stays on your device until you save it.</span><button type="submit">Save recipe</button></div>
       </form>
+    </article>
+  </dialog>
+  <dialog id="dev-dialog">
+    <article class="dev-panel">
+      <button type="button" class="close" id="close-dev" aria-label="Close developer menu">×</button>
+      <span class="detail-category">Private tools</span>
+      <h1>Developer menu</h1>
+      <p>Edit any cookbook record or remove a recipe added after the original import.</p>
+      <label class="dev-search">Find a recipe<input id="dev-search" type="search" placeholder="Search recipe titles…" autocomplete="off"></label>
+      <div id="dev-list" class="dev-list"></div>
     </article>
   </dialog>
   <footer><span>From Kathy’s collection.</span><span id="collection-stats"></span></footer>

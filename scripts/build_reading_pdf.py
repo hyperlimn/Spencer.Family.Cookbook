@@ -35,6 +35,15 @@ def main() -> None:
         raise ValueError(f"Missing printed page footers: {missing}")
     writer = PdfWriter()
 
+    # The unnumbered foreword occupies the left half of the first printer sheet.
+    foreword = copy.copy(source.pages[0])
+    half_width, page_height = float(foreword.mediabox.width) / 2, float(foreword.mediabox.height)
+    foreword_box = RectangleObject((0, 0, half_width, page_height))
+    foreword.mediabox = foreword_box
+    foreword.cropbox = foreword_box
+    foreword.trimbox = foreword_box
+    writer.add_page(foreword)
+
     for printed_page in range(1, 340):
         entry = numbered[printed_page]
         page = copy.copy(source.pages[entry["pdf_page"] - 1])
@@ -51,7 +60,7 @@ def main() -> None:
     output = ROOT / "docs" / "cookbook-reading-order.pdf"
     with output.open("wb") as stream:
         writer.write(stream)
-    print(f"Built {len(writer.pages)} ordered pages: {output.name}")
+    print(f"Built {len(writer.pages)} ordered pages including foreword: {output.name}")
 
 
 if __name__ == "__main__":

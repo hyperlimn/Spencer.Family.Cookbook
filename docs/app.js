@@ -1,14 +1,15 @@
 const ui={
   search:document.querySelector("#search-input"),clearSearch:document.querySelector("#clear-search"),
   categories:document.querySelector("#categories"),contributors:document.querySelector("#contributors"),
-  review:document.querySelector("#review-only"),grid:document.querySelector("#recipe-grid"),
+  grid:document.querySelector("#recipe-grid"),
   empty:document.querySelector("#empty"),count:document.querySelector("#count"),
   title:document.querySelector("#result-title"),context:document.querySelector("#result-context"),
   dialog:document.querySelector("#recipe-dialog"),detail:document.querySelector("#recipe-detail"),
   face:document.querySelector("#face-select"),dark:document.querySelector("#dark-mode"),
-  addDialog:document.querySelector("#add-dialog"),recent:document.querySelector("#recent-additions"),recentList:document.querySelector("#recent-list")
+  addDialog:document.querySelector("#add-dialog"),recent:document.querySelector("#recent-additions"),recentList:document.querySelector("#recent-list"),
+  devDialog:document.querySelector("#dev-dialog"),devSearch:document.querySelector("#dev-search"),devList:document.querySelector("#dev-list")
 };
-const state={recipes:[],query:"",category:"",contributor:"",reviewOnly:false,reviewFlags:new Set(JSON.parse(localStorage.getItem("cookbook-review-flags")||"[]"))};
+const state={recipes:[],query:"",category:"",contributor:""};
 const escapeHtml=value=>String(value??"").replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
 const normalize=value=>String(value??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const countBy=key=>state.recipes.reduce((result,recipe)=>{const value=recipe[key];if(value)result[value]=(result[value]||0)+1;return result},{});
@@ -23,41 +24,42 @@ function renderFilters(){
   ui.categories.innerHTML=Object.entries(countBy("category")).map(([name,count])=>`<button type="button" data-category="${escapeHtml(name)}"><span>${escapeHtml(name)}</span><small>${count}</small></button>`).join("");
   ui.contributors.innerHTML=Object.entries(countBy("contributor")).sort(([a],[b])=>a.localeCompare(b)).map(([name,count])=>`<button type="button" data-contributor="${escapeHtml(name)}"><span>${escapeHtml(name)}</span><small>${count}</small></button>`).join("");
   const recent=state.recipes.filter(recipe=>recipe.date_added).sort((a,b)=>String(b.date_added).localeCompare(String(a.date_added))).slice(0,5);
-  updateReviewVisibility();
   ui.recent.hidden=recent.length===0;ui.recentList.innerHTML=recent.map(recipe=>`<button type="button" data-recipe="${recipe.slug}"><strong>${escapeHtml(recipe.title)}</strong><small>${escapeHtml(recipe.contributor||"Family collection")} · ${escapeHtml(recipe.date_added)}</small></button>`).join("");
 }
 function matchingRecipes(){
   const query=normalize(state.query).trim();
-  return state.recipes.filter(recipe=>(!state.category||recipe.category===state.category)&&(!state.contributor||recipe.contributor===state.contributor)&&(!state.reviewOnly||needsReview(recipe))&&(!query||recipe.searchText.includes(query)));
+  return state.recipes.filter(recipe=>(!state.category||recipe.category===state.category)&&(!state.contributor||recipe.contributor===state.contributor)&&(!query||recipe.searchText.includes(query)));
 }
-const needsReview=recipe=>Boolean(recipe.needs_review||state.reviewFlags.has(recipe.slug));
-function updateReviewVisibility(){const count=state.recipes.filter(needsReview).length;ui.review.closest(".review").hidden=count===0;if(count===0&&state.reviewOnly){state.reviewOnly=false;ui.review.checked=false}}
 function render(){
   const recipes=matchingRecipes();
-  ui.title.textContent=state.query?`Results for “${state.query.trim()}”`:state.category||state.contributor||(state.reviewOnly?"Needs review":"All recipes");
+  ui.title.textContent=state.query?`Results for “${state.query.trim()}”`:state.category||state.contributor||"All recipes";
   ui.context.textContent=state.query?"Titles, ingredients, directions, and contributors":state.category||state.contributor?"Filtered collection":"The complete family collection";
   ui.count.textContent=`${recipes.length} ${recipes.length===1?"recipe":"recipes"}`;ui.clearSearch.hidden=!state.query;
-  ui.grid.innerHTML=recipes.map(recipe=>`<button type="button" class="recipe-card" data-recipe="${recipe.slug}"><span class="category">${escapeHtml(recipe.category)}</span><h2>${escapeHtml(recipe.title)}</h2><span class="by">${recipe.contributor?`From ${escapeHtml(recipe.contributor)}`:"Family collection"}</span><span class="page">${recipe.source_pages?.length?`Page ${recipe.source_pages.join(", ")}`:recipe.date_added?`Added ${escapeHtml(recipe.date_added)}`:""}${needsReview(recipe)?' <span class="review-dot" title="Needs review">●</span>':""}</span></button>`).join("");
+  ui.grid.innerHTML=recipes.map(recipe=>`<button type="button" class="recipe-card" data-recipe="${recipe.slug}"><span class="category">${escapeHtml(recipe.category)}</span><h2>${escapeHtml(recipe.title)}</h2><span class="by">${recipe.contributor?`From ${escapeHtml(recipe.contributor)}`:"Family collection"}</span><span class="page">${recipe.source_pages?.length?`Page ${recipe.source_pages.join(", ")}`:recipe.date_added?`Added ${escapeHtml(recipe.date_added)}`:""}</span></button>`).join("");
   ui.empty.hidden=recipes.length!==0;ui.grid.hidden=recipes.length===0;
   document.querySelectorAll("[data-category]").forEach(button=>button.classList.toggle("active",button.dataset.category===state.category));
   document.querySelectorAll("[data-contributor]").forEach(button=>button.classList.toggle("active",button.dataset.contributor===state.contributor));
 }
 function openRecipe(recipe){
   if(!recipe)return;
-  const firstPage=recipe.source_pages?.[0];const sourceLink=firstPage?`<a href="cookbook-reading-order.pdf#page=${firstPage}" target="_blank">Original page${recipe.source_pages.length>1?"s":""} ${recipe.source_pages.join(", ")}</a><a href="cookbook.pdf#page=${recipe.pdf_page}" target="_blank" class="printer-link">Printer PDF</a>`:"";
-  ui.detail.innerHTML=`<button type="button" class="close" aria-label="Close recipe">×</button><span class="detail-category">${escapeHtml(recipe.category)}</span><h1 class="detail-title">${escapeHtml(recipe.title)}</h1><p class="detail-by">${recipe.contributor?`Contributed by ${escapeHtml(recipe.contributor)}`:"From the family collection"}</p><div class="detail-grid"><section><h2>Ingredients</h2><ul class="ingredients">${recipe.ingredients.length?recipe.ingredients.map(item=>`<li>${escapeHtml(item)}</li>`).join(""):'<li>See original page</li>'}</ul></section><section class="directions"><h2>Directions</h2>${recipe.directions.map(step=>`<p>${escapeHtml(step)}</p>`).join("")}</section></div><div class="source-note">${sourceLink}<a href="https://github.com/hyperlimn/Spencer.Family.Cookbook/edit/main/${recipe.file}" target="_blank">Edit recipe</a><label class="check popup-review"><input type="checkbox" ${needsReview(recipe)?"checked":""}> Needs review</label><button type="button" class="expand-recipe">Full screen</button></div>`;
-  ui.dialog.showModal();history.replaceState(null,"",`#${recipe.slug}`);ui.detail.querySelector(".close").addEventListener("click",closeRecipe);ui.detail.querySelector(".expand-recipe").addEventListener("click",toggleRecipeSize);ui.detail.querySelector(".popup-review input").addEventListener("change",event=>setReview(recipe,event.currentTarget.checked));
+  const firstPage=recipe.source_pages?.[0];const sourceLink=firstPage?`<a href="cookbook-reading-order.pdf#page=${firstPage+1}" target="_blank">Original page${recipe.source_pages.length>1?"s":""} ${recipe.source_pages.join(", ")}</a>`:"";
+  ui.detail.innerHTML=`<button type="button" class="close" aria-label="Close recipe">×</button><span class="detail-category">${escapeHtml(recipe.category)}</span><h1 class="detail-title">${escapeHtml(recipe.title)}</h1><p class="detail-by">${recipe.contributor?`Contributed by ${escapeHtml(recipe.contributor)}`:"From the family collection"}</p><div class="detail-grid"><section><h2>Ingredients</h2><ul class="ingredients">${recipe.ingredients.length?recipe.ingredients.map(item=>`<li>${escapeHtml(item)}</li>`).join(""):'<li>See original page</li>'}</ul></section><section class="directions"><h2>Directions</h2>${recipe.directions.map(step=>`<p>${escapeHtml(step)}</p>`).join("")}</section></div><div class="source-note">${sourceLink}<button type="button" class="expand-recipe">Full screen</button></div>`;
+  ui.dialog.showModal();history.replaceState(null,"",`#${recipe.slug}`);ui.detail.querySelector(".close").addEventListener("click",closeRecipe);ui.detail.querySelector(".expand-recipe").addEventListener("click",toggleRecipeSize);
 }
-function setReview(recipe,checked){if(checked)state.reviewFlags.add(recipe.slug);else state.reviewFlags.delete(recipe.slug);localStorage.setItem("cookbook-review-flags",JSON.stringify([...state.reviewFlags]));updateReviewVisibility();render()}
 function toggleRecipeSize(){const expanded=ui.dialog.classList.toggle("expanded");ui.detail.querySelector(".expand-recipe").textContent=expanded?"Exit full screen":"Full screen";ui.dialog.scrollTop=0}
 function closeRecipe(){ui.dialog.classList.remove("expanded");ui.dialog.close();history.replaceState(null,"",location.pathname+location.search)}
-function reset(){state.query=state.category=state.contributor="";state.reviewOnly=false;ui.search.value="";ui.review.checked=false;render()}
+function reset(){state.query=state.category=state.contributor="";ui.search.value="";render()}
+function repositoryPath(file){return file.split("/").map(encodeURIComponent).join("/")}
+function renderDevList(){
+  const query=normalize(ui.devSearch.value).trim();const recipes=state.recipes.filter(recipe=>!query||normalize(`${recipe.title} ${recipe.contributor||""}`).includes(query)).slice(0,100);
+  ui.devList.innerHTML=recipes.map(recipe=>`<div class="dev-row"><span><strong>${escapeHtml(recipe.title)}</strong><small>${escapeHtml(recipe.contributor||recipe.category)}</small></span><span class="dev-actions"><a href="https://github.com/hyperlimn/Spencer.Family.Cookbook/edit/main/${repositoryPath(recipe.file)}" target="_blank">Edit</a>${recipe.date_added?`<a class="delete" href="https://github.com/hyperlimn/Spencer.Family.Cookbook/delete/main/${repositoryPath(recipe.file)}" target="_blank">Delete</a>`:""}</span></div>`).join("");
+}
+function openDevMenu(){document.querySelector("#dev-trigger").classList.remove("unlocking");ui.devSearch.value="";renderDevList();ui.devDialog.showModal()}
 
 document.querySelector("#search-form").addEventListener("submit",event=>{event.preventDefault();state.query=ui.search.value;render()});
 ui.search.addEventListener("input",event=>{state.query=event.currentTarget.value;render()});
 ui.clearSearch.addEventListener("click",()=>{state.query="";ui.search.value="";ui.search.focus();render()});
 document.querySelector("#clear-filters").addEventListener("click",reset);
-ui.review.addEventListener("change",event=>{state.reviewOnly=event.currentTarget.checked;render()});
 ui.face.addEventListener("change",event=>{document.documentElement.dataset.face=event.currentTarget.value;localStorage.setItem("cookbook-face",event.currentTarget.value)});
 ui.dark.addEventListener("change",event=>{const theme=event.currentTarget.checked?"dark":"light";document.documentElement.dataset.theme=theme;localStorage.setItem("cookbook-theme",theme)});
 document.addEventListener("click",event=>{const category=event.target.closest("[data-category]");const contributor=event.target.closest("[data-contributor]");const card=event.target.closest("[data-recipe]");if(category){state.category=state.category===category.dataset.category?"":category.dataset.category;render()}if(contributor){state.contributor=state.contributor===contributor.dataset.contributor?"":contributor.dataset.contributor;render()}if(card)openRecipe(state.recipes.find(recipe=>recipe.slug===card.dataset.recipe))});
@@ -65,6 +67,13 @@ document.querySelector("#surprise").addEventListener("click",()=>openRecipe(stat
 document.querySelector("#add-recipe").addEventListener("click",()=>ui.addDialog.showModal());
 document.querySelector("#close-add").addEventListener("click",()=>ui.addDialog.close());
 ui.addDialog.addEventListener("click",event=>{if(event.target===ui.addDialog)ui.addDialog.close()});
+document.querySelector("#close-dev").addEventListener("click",()=>ui.devDialog.close());ui.devDialog.addEventListener("click",event=>{if(event.target===ui.devDialog)ui.devDialog.close()});ui.devSearch.addEventListener("input",renderDevList);
+{
+  const trigger=document.querySelector("#dev-trigger");let unlockTimer;
+  const cancel=()=>{clearTimeout(unlockTimer);trigger.classList.remove("unlocking")};
+  trigger.addEventListener("pointerdown",event=>{event.preventDefault();cancel();trigger.classList.add("unlocking");trigger.setPointerCapture?.(event.pointerId);unlockTimer=setTimeout(openDevMenu,10000)});
+  ["pointerup","pointercancel","pointerleave"].forEach(name=>trigger.addEventListener(name,cancel));trigger.addEventListener("contextmenu",event=>event.preventDefault());
+}
 document.querySelector("#recipe-form").addEventListener("submit",event=>{
   event.preventDefault();const values=Object.fromEntries(new FormData(event.currentTarget));
   const slug=normalize(values.title).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"family-recipe";
