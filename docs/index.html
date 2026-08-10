@@ -20,7 +20,7 @@
     <nav class="primary-nav" aria-label="Cookbook links">
       <button id="surprise" type="button">Surprise me</button>
       <a href="cookbook.pdf" target="_blank">Original book</a>
-      <a href="https://github.com/hyperlimn/Spencer.Family.Cookbook" target="_blank">Contribute</a>
+      <button id="add-recipe" type="button">Add recipe</button>
     </nav>
   </header>
 
@@ -34,10 +34,13 @@
         <kbd>/</kbd>
       </form>
       <div class="appearance">
-        <label>Face
+        <label>Theme
           <select id="face-select" aria-label="Choose site face">
             <option value="minimal">Minimal</option>
             <option value="classic">Classic</option>
+            <option value="playful">Playful</option>
+            <option value="elegant">Elegant</option>
+            <option value="readable">High readability</option>
           </select>
         </label>
         <label class="check"><input id="dark-mode" type="checkbox"> Dark mode</label>
@@ -53,6 +56,10 @@
           <div id="contributors" class="filters contributor-list"></div>
         </details>
         <label class="check review"><input type="checkbox" id="review-only"> Needs review</label>
+        <section id="recent-additions" class="recent" hidden>
+          <h2>Recent additions</h2>
+          <div id="recent-list"></div>
+        </section>
       </aside>
 
       <section class="results">
@@ -67,6 +74,26 @@
   </main>
 
   <dialog id="recipe-dialog"><article id="recipe-detail"></article></dialog>
+  <dialog id="add-dialog">
+    <article class="add-panel">
+      <button type="button" class="close" id="close-add" aria-label="Close form">×</button>
+      <span class="detail-category">Family collection</span>
+      <h1>Add a recipe</h1>
+      <p>Fill in what you know. Your entry will open as a GitHub contribution for review before it joins the cookbook.</p>
+      <form id="recipe-form">
+        <div class="form-grid">
+          <label>Recipe name<input name="title" required autocomplete="off"></label>
+          <label>Your name<input name="contributor" required autocomplete="name"></label>
+          <label>Category<select name="category" required><option value="">Choose…</option><option>Appetizers</option><option>Beverages</option><option>Breakfast</option><option>Desserts</option><option>Main Courses</option><option>Miscellaneous</option><option>Side Dishes</option><option>Slow Cooker</option><option>Soups</option></select></label>
+          <label>Yield or servings<input name="yield" placeholder="Optional"></label>
+        </div>
+        <label>Ingredients <small>One ingredient per line</small><textarea name="ingredients" required rows="7" placeholder="2 cups flour&#10;1 teaspoon salt"></textarea></label>
+        <label>Directions<textarea name="directions" required rows="7" placeholder="Describe the steps in order…"></textarea></label>
+        <label>Family note <small>Optional</small><textarea name="notes" rows="3" placeholder="Who made it, when it was served, or why it matters…"></textarea></label>
+        <div class="form-actions"><span>A GitHub account is required to submit.</span><button type="submit">Review contribution</button></div>
+      </form>
+    </article>
+  </dialog>
   <footer><span>From Kathy’s collection.</span><span id="collection-stats"></span></footer>
   <script src="app.js" defer></script>
 </body>

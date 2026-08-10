@@ -24,6 +24,7 @@ source_pages: [2]
 pdf_page: 3
 source_side: "left"
 needs_review: false
+date_added: "2026-08-09"
 ingredients:
   - "12 macaroons, crushed in small pieces"
 ---
@@ -32,6 +33,8 @@ Mix together macaroons, sugar, and sour cream.
 ```
 
 `source_pages` are printed cookbook page numbers. `pdf_page` points to the sheet in `cookbook.pdf`, whose printer-spread layout is not in reading order.
+
+`date_added` is optional. New contributed recipes with this field appear automatically in the site's **Recent additions** section; original imported recipes omit it.
 
 ## Re-import from the PDF
 

@@ -5,7 +5,8 @@ const ui={
   empty:document.querySelector("#empty"),count:document.querySelector("#count"),
   title:document.querySelector("#result-title"),context:document.querySelector("#result-context"),
   dialog:document.querySelector("#recipe-dialog"),detail:document.querySelector("#recipe-detail"),
-  face:document.querySelector("#face-select"),dark:document.querySelector("#dark-mode")
+  face:document.querySelector("#face-select"),dark:document.querySelector("#dark-mode"),
+  addDialog:document.querySelector("#add-dialog"),recent:document.querySelector("#recent-additions"),recentList:document.querySelector("#recent-list")
 };
 const state={recipes:[],query:"",category:"",contributor:"",reviewOnly:false};
 const escapeHtml=value=>String(value??"").replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
@@ -21,6 +22,8 @@ function setAppearance(){
 function renderFilters(){
   ui.categories.innerHTML=Object.entries(countBy("category")).map(([name,count])=>`<button type="button" data-category="${escapeHtml(name)}"><span>${escapeHtml(name)}</span><small>${count}</small></button>`).join("");
   ui.contributors.innerHTML=Object.entries(countBy("contributor")).sort(([a],[b])=>a.localeCompare(b)).map(([name,count])=>`<button type="button" data-contributor="${escapeHtml(name)}"><span>${escapeHtml(name)}</span><small>${count}</small></button>`).join("");
+  const recent=state.recipes.filter(recipe=>recipe.date_added).sort((a,b)=>String(b.date_added).localeCompare(String(a.date_added))).slice(0,5);
+  ui.recent.hidden=recent.length===0;ui.recentList.innerHTML=recent.map(recipe=>`<button type="button" data-recipe="${recipe.slug}"><strong>${escapeHtml(recipe.title)}</strong><small>${escapeHtml(recipe.contributor||"Family collection")} · ${escapeHtml(recipe.date_added)}</small></button>`).join("");
 }
 function matchingRecipes(){
   const query=normalize(state.query).trim();
@@ -31,14 +34,15 @@ function render(){
   ui.title.textContent=state.query?`Results for “${state.query.trim()}”`:state.category||state.contributor||(state.reviewOnly?"Needs review":"All recipes");
   ui.context.textContent=state.query?"Titles, ingredients, directions, and contributors":state.category||state.contributor?"Filtered collection":"The complete family collection";
   ui.count.textContent=`${recipes.length} ${recipes.length===1?"recipe":"recipes"}`;ui.clearSearch.hidden=!state.query;
-  ui.grid.innerHTML=recipes.map(recipe=>`<button type="button" class="recipe-card" data-recipe="${recipe.slug}"><span class="category">${escapeHtml(recipe.category)}</span><h2>${escapeHtml(recipe.title)}</h2><span class="by">${recipe.contributor?`From ${escapeHtml(recipe.contributor)}`:"Family collection"}</span><span class="page">Page ${recipe.source_pages.join(", ")}${recipe.needs_review?' <span class="review-dot" title="Needs review">●</span>':""}</span></button>`).join("");
+  ui.grid.innerHTML=recipes.map(recipe=>`<button type="button" class="recipe-card" data-recipe="${recipe.slug}"><span class="category">${escapeHtml(recipe.category)}</span><h2>${escapeHtml(recipe.title)}</h2><span class="by">${recipe.contributor?`From ${escapeHtml(recipe.contributor)}`:"Family collection"}</span><span class="page">${recipe.source_pages?.length?`Page ${recipe.source_pages.join(", ")}`:recipe.date_added?`Added ${escapeHtml(recipe.date_added)}`:""}${recipe.needs_review?' <span class="review-dot" title="Needs review">●</span>':""}</span></button>`).join("");
   ui.empty.hidden=recipes.length!==0;ui.grid.hidden=recipes.length===0;
   document.querySelectorAll("[data-category]").forEach(button=>button.classList.toggle("active",button.dataset.category===state.category));
   document.querySelectorAll("[data-contributor]").forEach(button=>button.classList.toggle("active",button.dataset.contributor===state.contributor));
 }
 function openRecipe(recipe){
   if(!recipe)return;
-  ui.detail.innerHTML=`<button type="button" class="close" aria-label="Close recipe">×</button><span class="detail-category">${escapeHtml(recipe.category)}</span><h1 class="detail-title">${escapeHtml(recipe.title)}</h1><p class="detail-by">${recipe.contributor?`Contributed by ${escapeHtml(recipe.contributor)}`:"From the family collection"}</p><div class="detail-grid"><section><h2>Ingredients</h2><ul class="ingredients">${recipe.ingredients.length?recipe.ingredients.map(item=>`<li>${escapeHtml(item)}</li>`).join(""):'<li>See original page</li>'}</ul></section><section class="directions"><h2>Directions</h2>${recipe.directions.map(step=>`<p>${escapeHtml(step)}</p>`).join("")}</section></div><div class="source-note">${recipe.needs_review?'<span class="review-dot">● Needs transcription review</span>':""}<a href="cookbook.pdf#page=${recipe.pdf_page}" target="_blank">Original page ${recipe.source_pages.join(", ")}</a><a href="https://github.com/hyperlimn/Spencer.Family.Cookbook/edit/main/${recipe.file}" target="_blank">Edit recipe</a></div>`;
+  const sourceLink=recipe.pdf_page&&recipe.source_pages?.length?`<a href="cookbook.pdf#page=${recipe.pdf_page}" target="_blank">Original page ${recipe.source_pages.join(", ")}</a>`:"";
+  ui.detail.innerHTML=`<button type="button" class="close" aria-label="Close recipe">×</button><span class="detail-category">${escapeHtml(recipe.category)}</span><h1 class="detail-title">${escapeHtml(recipe.title)}</h1><p class="detail-by">${recipe.contributor?`Contributed by ${escapeHtml(recipe.contributor)}`:"From the family collection"}</p><div class="detail-grid"><section><h2>Ingredients</h2><ul class="ingredients">${recipe.ingredients.length?recipe.ingredients.map(item=>`<li>${escapeHtml(item)}</li>`).join(""):'<li>See original page</li>'}</ul></section><section class="directions"><h2>Directions</h2>${recipe.directions.map(step=>`<p>${escapeHtml(step)}</p>`).join("")}</section></div><div class="source-note">${recipe.needs_review?'<span class="review-dot">● Needs transcription review</span>':""}${sourceLink}<a href="https://github.com/hyperlimn/Spencer.Family.Cookbook/edit/main/${recipe.file}" target="_blank">Edit recipe</a></div>`;
   ui.dialog.showModal();history.replaceState(null,"",`#${recipe.slug}`);ui.detail.querySelector(".close").addEventListener("click",closeRecipe);
 }
 function closeRecipe(){ui.dialog.close();history.replaceState(null,"",location.pathname+location.search)}
@@ -53,6 +57,15 @@ ui.face.addEventListener("change",event=>{document.documentElement.dataset.face=
 ui.dark.addEventListener("change",event=>{const theme=event.currentTarget.checked?"dark":"light";document.documentElement.dataset.theme=theme;localStorage.setItem("cookbook-theme",theme)});
 document.addEventListener("click",event=>{const category=event.target.closest("[data-category]");const contributor=event.target.closest("[data-contributor]");const card=event.target.closest("[data-recipe]");if(category){state.category=state.category===category.dataset.category?"":category.dataset.category;render()}if(contributor){state.contributor=state.contributor===contributor.dataset.contributor?"":contributor.dataset.contributor;render()}if(card)openRecipe(state.recipes.find(recipe=>recipe.slug===card.dataset.recipe))});
 document.querySelector("#surprise").addEventListener("click",()=>openRecipe(state.recipes[Math.floor(Math.random()*state.recipes.length)]));
+document.querySelector("#add-recipe").addEventListener("click",()=>ui.addDialog.showModal());
+document.querySelector("#close-add").addEventListener("click",()=>ui.addDialog.close());
+ui.addDialog.addEventListener("click",event=>{if(event.target===ui.addDialog)ui.addDialog.close()});
+document.querySelector("#recipe-form").addEventListener("submit",event=>{
+  event.preventDefault();const values=Object.fromEntries(new FormData(event.currentTarget));
+  const ingredients=values.ingredients.split(/\r?\n/).map(line=>line.trim()).filter(Boolean).map(line=>`- ${line}`).join("\n");
+  const body=`## Recipe submission\n\n**Recipe:** ${values.title}\n**Contributor:** ${values.contributor}\n**Category:** ${values.category}\n**Yield:** ${values.yield||"Not specified"}\n\n### Ingredients\n${ingredients}\n\n### Directions\n${values.directions}\n\n### Family note\n${values.notes||"None"}\n\n---\nSubmitted from the cookbook website.`;
+  const url=new URL("https://github.com/hyperlimn/Spencer.Family.Cookbook/issues/new");url.searchParams.set("title",`Recipe: ${values.title}`);url.searchParams.set("body",body);window.open(url.toString(),"_blank","noopener");
+});
 ui.dialog.addEventListener("click",event=>{if(event.target===ui.dialog)closeRecipe()});
 document.addEventListener("keydown",event=>{if(event.key==="/"&&!/input|textarea|select/i.test(event.target.tagName)){event.preventDefault();ui.search.focus()}});
 
