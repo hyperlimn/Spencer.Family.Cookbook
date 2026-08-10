@@ -12,7 +12,7 @@ const ui={
 };
 const state={recipes:[],query:"",category:"",contributor:""};
 const repository="https://github.com/hyperlimn/Spencer.Family.Cookbook";
-const recipeSubmissionEndpoint="https://formspree.io/f/mdeneyvw";
+const recipeSubmissionEndpoint="https://spencer-family-cookbook.hyperlimn.workers.dev";
 const escapeHtml=value=>String(value??"").replace(/[&<>'"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[char]));
 const normalize=value=>String(value??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
 const countBy=key=>state.recipes.reduce((result,recipe)=>{const value=recipe[key];if(value)result[value]=(result[value]||0)+1;return result},{});
@@ -90,25 +90,14 @@ document.querySelector("#mobile-menu-button").addEventListener("click",()=>docum
 document.querySelector("#recipe-form").addEventListener("submit",async event=>{
   event.preventDefault();const values=Object.fromEntries(new FormData(event.currentTarget));
   const form=event.currentTarget;const button=form.querySelector('button[type="submit"]');const status=document.querySelector("#form-status");
-  const slug=normalize(values.title).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"family-recipe";
-  const ingredients=values.ingredients.split(/\r?\n/).map(line=>line.trim()).filter(Boolean).map(line=>`  - ${JSON.stringify(line)}`).join("\n");
-  const content=`---\ntitle: ${JSON.stringify(values.title)}\nslug: ${JSON.stringify(slug)}\ncategory: ${JSON.stringify(values.category)}\ncontributor: ${JSON.stringify(values.contributor)}\nyield: ${JSON.stringify(values.yield||"")}\nsource_pages: []\npdf_page: null\nsource_side: null\nneeds_review: false\ndate_added: ${JSON.stringify(new Date().toISOString().slice(0,10))}\ningredients:\n${ingredients}\n---\n\n${values.directions.trim()}${values.notes.trim()?`\n\n## Family note\n\n${values.notes.trim()}`:""}\n`;
   button.disabled=true;button.textContent="Sending…";status.textContent="Sending recipe…";
   try{
-    const submission=new FormData();
-    Object.entries(values).forEach(([name,value])=>submission.append(name,value));
-    submission.append("_subject",`Cookbook recipe submission: ${values.title}`);
-    submission.append("suggested_filename",`${slug}.md`);
-    submission.append("markdown",content);
-    submission.append("recipe_file",new File([content],`${slug}.md`,{type:"text/markdown"}));
-    let response=await fetch(recipeSubmissionEndpoint,{method:"POST",headers:{Accept:"application/json"},body:submission});
-    // Formspree file uploads require a qualifying plan. Keep submissions working
-    // on other plans by retrying with the Markdown in the email body.
-    if(!response.ok&&[400,402,403,422].includes(response.status))response=await fetch(recipeSubmissionEndpoint,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify({...values,_subject:`Cookbook recipe submission: ${values.title}`,suggested_filename:`${slug}.md`,markdown:content})});
-    if(!response.ok)throw new Error(`Submission ${response.status}`);
-    form.reset();status.textContent="Submit when your recipe is ready.";button.disabled=false;button.textContent="Send recipe";ui.addDialog.close();showSubmissionToast("Recipe submitted successfully. Thank you!");
+    const response=await fetch(recipeSubmissionEndpoint,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify(values)});
+    const result=await response.json();
+    if(!response.ok)throw new Error(result.error||`Submission ${response.status}`);
+    form.reset();status.textContent="Submit when your recipe is ready.";button.disabled=false;button.textContent="Send recipe";ui.addDialog.close();showSubmissionToast("Recipe submitted for review. Thank you!");
   }catch(error){
-    status.textContent="The recipe could not be sent. Please try again.";button.disabled=false;button.textContent="Send recipe";console.error(error);
+    status.textContent=error.message||"The recipe could not be sent. Please try again.";button.disabled=false;button.textContent="Send recipe";console.error(error);
   }
 });
 ui.dialog.addEventListener("click",event=>{if(event.target===ui.dialog)closeRecipe()});
