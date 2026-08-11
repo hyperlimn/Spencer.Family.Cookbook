@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260811-mobile-filters">
+  <link rel="stylesheet" href="styles.css?v=20260811-original-book">
 </head>
 <body>
   <header class="site-header">
@@ -19,7 +19,7 @@
     </a>
     <nav class="primary-nav" aria-label="Cookbook links">
       <button id="surprise" type="button">Surprise me</button>
-      <a href="cookbook-reading-order.pdf" target="_blank">Original book</a>
+      <a href="cookbook-reading-order.pdf" target="_blank" rel="noopener">Original book</a>
       <button id="add-recipe" type="button">Add recipe</button>
       <button id="mobile-menu-button" class="menu-button" type="button" aria-label="Open browse menu" aria-haspopup="dialog"><span></span><span></span><span></span></button>
     </nav>
@@ -108,10 +108,13 @@
     <article class="mobile-panel">
       <header><span>Browse</span><button type="button" id="close-mobile-menu" aria-label="Close menu">×</button></header>
       <div id="mobile-tools"></div>
+      <a class="mobile-book-link" href="cookbook-reading-order.pdf" target="_blank" rel="noopener">
+        <span>View the original book</span><span aria-hidden="true">↗</span>
+      </a>
     </article>
   </dialog>
   <div id="submission-toast" class="submission-toast" role="status" aria-live="polite" hidden></div>
   <footer><span>From Kathy’s collection.</span><span id="collection-stats"></span></footer>
-    <script src="app.js?v=20260811-mobile-filters" defer></script>
+    <script src="app.js?v=20260811-original-book" defer></script>
 </body>
 </html>
