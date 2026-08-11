@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20260811-mobile-menu">
+  <link rel="stylesheet" href="styles.css?v=20260811-mobile-filters">
 </head>
 <body>
   <header class="site-header">
@@ -56,16 +56,16 @@
           <summary>Contributors</summary>
           <div id="contributors" class="filters contributor-list"></div>
         </details>
-        <section id="recent-additions" class="recent" hidden>
-          <h2>Recent additions</h2>
+        <details id="recent-additions" class="recent" open hidden>
+          <summary>Recent additions</summary>
           <div id="recent-list"></div>
-        </section>
+        </details>
       </aside>
 
       <section class="results">
         <header class="results-heading">
           <div><h1 id="result-title">All recipes</h1><p id="result-context">The complete family collection</p></div>
-          <div class="result-meta"><span id="count" aria-live="polite">Loading…</span><button id="mobile-surprise" type="button">Surprise me</button></div>
+          <div class="result-meta"><span id="count" aria-live="polite">Loading…</span><button id="mobile-surprise" type="button">Surprise me</button><button id="mobile-clear-filters" type="button" hidden>Reset filters</button></div>
         </header>
         <div id="recipe-grid" class="recipe-grid" aria-live="polite"></div>
         <div id="empty" class="empty" hidden><span aria-hidden="true">✽</span><h2>No recipes found</h2><p>Try another word or reset your filters.</p></div>
@@ -106,12 +106,12 @@
   </dialog>
   <dialog id="mobile-menu-dialog">
     <article class="mobile-panel">
-      <header><button type="button" id="close-mobile-menu" aria-label="Close menu">×</button></header>
+      <header><span>Browse</span><button type="button" id="close-mobile-menu" aria-label="Close menu">×</button></header>
       <div id="mobile-tools"></div>
     </article>
   </dialog>
   <div id="submission-toast" class="submission-toast" role="status" aria-live="polite" hidden></div>
   <footer><span>From Kathy’s collection.</span><span id="collection-stats"></span></footer>
-    <script src="app.js?v=20260811-mobile-menu" defer></script>
+    <script src="app.js?v=20260811-mobile-filters" defer></script>
 </body>
 </html>

@@ -2,7 +2,7 @@ const ui={
   search:document.querySelector("#search-input"),clearSearch:document.querySelector("#clear-search"),
   categories:document.querySelector("#categories"),contributors:document.querySelector("#contributors"),
   grid:document.querySelector("#recipe-grid"),
-  empty:document.querySelector("#empty"),count:document.querySelector("#count"),
+  empty:document.querySelector("#empty"),count:document.querySelector("#count"),mobileClearFilters:document.querySelector("#mobile-clear-filters"),
   title:document.querySelector("#result-title"),context:document.querySelector("#result-context"),
   dialog:document.querySelector("#recipe-dialog"),detail:document.querySelector("#recipe-detail"),
   face:document.querySelector("#face-select"),dark:document.querySelector("#dark-mode"),
@@ -37,7 +37,7 @@ function render(){
   const recipes=matchingRecipes();
   ui.title.textContent=state.query?`Results for “${state.query.trim()}”`:state.category||state.contributor||"All recipes";
   ui.context.textContent=state.query?"Titles, ingredients, directions, and contributors":state.category||state.contributor?"Filtered collection":"The complete family collection";
-  ui.count.textContent=`${recipes.length} ${recipes.length===1?"recipe":"recipes"}`;ui.clearSearch.hidden=!state.query;
+  ui.count.textContent=`${recipes.length} ${recipes.length===1?"recipe":"recipes"}`;ui.clearSearch.hidden=!state.query;ui.mobileClearFilters.hidden=!(state.category||state.contributor);
   ui.grid.innerHTML=recipes.map(recipe=>`<button type="button" class="recipe-card" data-recipe="${recipe.slug}"><span class="category">${escapeHtml(recipe.category)}</span><h2>${escapeHtml(recipe.title)}</h2><span class="by">${recipe.contributor?`From ${escapeHtml(recipe.contributor)}`:"Family collection"}</span><span class="page">${recipe.source_pages?.length?`Page ${recipe.source_pages.join(", ")}`:recipe.date_added?`Added ${escapeHtml(recipe.date_added)}`:""}</span></button>`).join("");
   ui.empty.hidden=recipes.length!==0;ui.grid.hidden=recipes.length===0;
   document.querySelectorAll("[data-category]").forEach(button=>button.classList.toggle("active",button.dataset.category===state.category));
@@ -64,13 +64,14 @@ const mobileQuery=matchMedia("(max-width: 820px)");
 const appearance=document.querySelector(".appearance"),sidebar=document.querySelector(".sidebar"),mobileTools=document.querySelector("#mobile-tools");
 const appearanceHome=appearance.parentNode,appearanceNext=appearance.nextSibling,sidebarHome=sidebar.parentNode,sidebarNext=sidebar.nextSibling;
 function syncMobileLayout(){
-  if(mobileQuery.matches){mobileTools.append(sidebar,appearance)}else{if(document.querySelector("#mobile-menu-dialog").open)document.querySelector("#mobile-menu-dialog").close();appearanceHome.insertBefore(appearance,appearanceNext);sidebarHome.insertBefore(sidebar,sidebarNext)}
+  if(mobileQuery.matches){ui.recent.removeAttribute("open");mobileTools.append(sidebar,appearance)}else{ui.recent.setAttribute("open","");if(document.querySelector("#mobile-menu-dialog").open)document.querySelector("#mobile-menu-dialog").close();appearanceHome.insertBefore(appearance,appearanceNext);sidebarHome.insertBefore(sidebar,sidebarNext)}
 }
 
 document.querySelector("#search-form").addEventListener("submit",event=>{event.preventDefault();state.query=ui.search.value;render()});
 ui.search.addEventListener("input",event=>{state.query=event.currentTarget.value;render()});
 ui.clearSearch.addEventListener("click",()=>{state.query="";ui.search.value="";ui.search.focus();render()});
 document.querySelector("#clear-filters").addEventListener("click",reset);
+ui.mobileClearFilters.addEventListener("click",reset);
 ui.face.addEventListener("change",event=>{document.documentElement.dataset.face=event.currentTarget.value;localStorage.setItem("cookbook-face",event.currentTarget.value)});
 ui.dark.addEventListener("change",event=>{const theme=event.currentTarget.checked?"dark":"light";document.documentElement.dataset.theme=theme;localStorage.setItem("cookbook-theme",theme)});
 document.addEventListener("click",event=>{const category=event.target.closest("[data-category]");const contributor=event.target.closest("[data-contributor]");const card=event.target.closest("[data-recipe]");if(category){state.category=state.category===category.dataset.category?"":category.dataset.category;render()}if(contributor){state.contributor=state.contributor===contributor.dataset.contributor?"":contributor.dataset.contributor;render()}if((category||contributor)&&mobileQuery.matches&&document.querySelector("#mobile-menu-dialog").open)document.querySelector("#mobile-menu-dialog").close();if(card)openRecipe(state.recipes.find(recipe=>recipe.slug===card.dataset.recipe))});
