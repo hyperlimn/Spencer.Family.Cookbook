@@ -64,7 +64,7 @@ const mobileQuery=matchMedia("(max-width: 820px)");
 const appearance=document.querySelector(".appearance"),sidebar=document.querySelector(".sidebar"),mobileTools=document.querySelector("#mobile-tools");
 const appearanceHome=appearance.parentNode,appearanceNext=appearance.nextSibling,sidebarHome=sidebar.parentNode,sidebarNext=sidebar.nextSibling;
 function syncMobileLayout(){
-  if(mobileQuery.matches){mobileTools.append(appearance,sidebar)}else{if(document.querySelector("#mobile-menu-dialog").open)document.querySelector("#mobile-menu-dialog").close();appearanceHome.insertBefore(appearance,appearanceNext);sidebarHome.insertBefore(sidebar,sidebarNext)}
+  if(mobileQuery.matches){mobileTools.append(sidebar,appearance)}else{if(document.querySelector("#mobile-menu-dialog").open)document.querySelector("#mobile-menu-dialog").close();appearanceHome.insertBefore(appearance,appearanceNext);sidebarHome.insertBefore(sidebar,sidebarNext)}
 }
 
 document.querySelector("#search-form").addEventListener("submit",event=>{event.preventDefault();state.query=ui.search.value;render()});
@@ -74,12 +74,13 @@ document.querySelector("#clear-filters").addEventListener("click",reset);
 ui.face.addEventListener("change",event=>{document.documentElement.dataset.face=event.currentTarget.value;localStorage.setItem("cookbook-face",event.currentTarget.value)});
 ui.dark.addEventListener("change",event=>{const theme=event.currentTarget.checked?"dark":"light";document.documentElement.dataset.theme=theme;localStorage.setItem("cookbook-theme",theme)});
 document.addEventListener("click",event=>{const category=event.target.closest("[data-category]");const contributor=event.target.closest("[data-contributor]");const card=event.target.closest("[data-recipe]");if(category){state.category=state.category===category.dataset.category?"":category.dataset.category;render()}if(contributor){state.contributor=state.contributor===contributor.dataset.contributor?"":contributor.dataset.contributor;render()}if((category||contributor)&&mobileQuery.matches&&document.querySelector("#mobile-menu-dialog").open)document.querySelector("#mobile-menu-dialog").close();if(card)openRecipe(state.recipes.find(recipe=>recipe.slug===card.dataset.recipe))});
-document.querySelector("#surprise").addEventListener("click",()=>openRecipe(state.recipes[Math.floor(Math.random()*state.recipes.length)]));
+const surprise=()=>openRecipe(state.recipes[Math.floor(Math.random()*state.recipes.length)]);
+document.querySelector("#surprise").addEventListener("click",surprise);
 document.querySelector("#add-recipe").addEventListener("click",()=>ui.addDialog.showModal());
 document.querySelector("#close-add").addEventListener("click",()=>ui.addDialog.close());
 ui.addDialog.addEventListener("click",event=>{if(event.target===ui.addDialog)ui.addDialog.close()});
 document.querySelector("#close-dev").addEventListener("click",()=>ui.devDialog.close());ui.devDialog.addEventListener("click",event=>{if(event.target===ui.devDialog)ui.devDialog.close()});ui.devSearch.addEventListener("input",renderDevList);
-document.querySelector("#mobile-menu-button").addEventListener("click",()=>document.querySelector("#mobile-menu-dialog").showModal());document.querySelector("#close-mobile-menu").addEventListener("click",()=>document.querySelector("#mobile-menu-dialog").close());document.querySelector("#mobile-reset").addEventListener("click",reset);mobileQuery.addEventListener("change",syncMobileLayout);syncMobileLayout();
+document.querySelector("#mobile-menu-button").addEventListener("click",()=>document.querySelector("#mobile-menu-dialog").showModal());document.querySelector("#close-mobile-menu").addEventListener("click",()=>document.querySelector("#mobile-menu-dialog").close());document.querySelector("#mobile-surprise").addEventListener("click",surprise);mobileQuery.addEventListener("change",syncMobileLayout);syncMobileLayout();
 {
   const trigger=document.querySelector("#dev-trigger");const touchDevice=matchMedia("(pointer: coarse)").matches;let unlockTimer,taps=0,tapTimer;
   const cancel=()=>{clearTimeout(unlockTimer);trigger.classList.remove("unlocking")};
